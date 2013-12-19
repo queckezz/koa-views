@@ -1,7 +1,7 @@
 {
   "name": "koa-render",
   "version": "0.0.1",
-  "description": "Add a `render()` method to koa's context for app-wide usage.",
+  "description": "Add a `render()` method to koa that allows you to render almost any templating engine",
   "main": "index.js",
   "dependencies": {
     "co-views": "*"
