@@ -1,0 +1,30 @@
+{
+  "name": "koa-render",
+  "version": "0.0.1",
+  "description": "Add a `render()` method to Koa's context for app-wide views.",
+  "main": "index.js",
+  "dependencies": {
+    "co-views": "*"
+  },
+  "devDependencies": {
+    "koa-route": "*",
+    "koa": "*",
+    "jade": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/queckezz/component-utils"
+  },
+  "keywords": [
+    "koa",
+    "render",
+    "views",
+    "app-wide"
+  ],
+  "author": "queckezz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/queckezz/koa-render/issues"
+  },
+  "homepage": "https://github.com/queckezz/koa-render"
+}
