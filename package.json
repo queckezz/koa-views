@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/queckezz/component-utils"
+    "url": "https://github.com/queckezz/koa-render"
   },
   "keywords": [
     "koa",
@@ -25,6 +25,5 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/queckezz/koa-render/issues"
-  },
-  "homepage": "https://github.com/queckezz/koa-render"
+  }
 }
