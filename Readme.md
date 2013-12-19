@@ -1,6 +1,6 @@
 ## Koa-render
  
-Add a `render()` method to Koa's context for app-wide views.
+Add a `render()` method to koa's context for app-wide usage.
  
 This has the advantage that you can mount other koa-applications to your main app and still have `render()` with the initial settings in each of them available. Just make sure that you define `views()` before you mount other apps.
  

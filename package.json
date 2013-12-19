@@ -1,7 +1,7 @@
 {
   "name": "koa-render",
   "version": "0.0.1",
-  "description": "Add a `render()` method to Koa's context for app-wide views.",
+  "description": "Add a `render()` method to koa's context for app-wide usage.",
   "main": "index.js",
   "dependencies": {
     "co-views": "*"
