@@ -3,7 +3,7 @@
  * Module dependencies.
  */
 
-var views = require('co-views')
+var views = require('co-views');
 
 /**
  * Expose `render()`.
@@ -25,9 +25,9 @@ function render(path, engine, opts) {
   opts = opts || {};
 
   return function *(next) {
-    opts.ext = engine
-    this.render = views(path, opts)
+    opts.ext = engine;
+    this.render = views(path, opts);
 
-    yield next
+    yield next;
   }
 }
