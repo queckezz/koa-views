@@ -25,7 +25,7 @@ function render(path, engine, opts) {
   opts = opts || {};
 
   return function *(next) {
-    opts.ext = engine;
+    if (opts.ext == null) opts.ext = engine;
     this.render = views(path, opts);
 
     yield next;
