@@ -12,20 +12,27 @@ var views = require('co-views');
 module.exports = render;
 
 /**
- * Expose a `render()` method to Koa's context.
+ * Expose a `render()` method to koa.
  *
  * @param {String} path
- * @param {String} engine
- * @param {Object} opts
- * @return {Function} Middleware
+ * @param {String} ext [optional]
+ * @param {Object} custom map [optional]
+ * @return {Function} middleware
  * @api public
  */
 
-function render(path, engine, opts) {
-  opts = opts || {};
+function render(path, ext, map) {
+  var opts = {};
+
+  if (map) {
+    opts.map = map;
+    opts.ext = ext
+  }
+
+  if (typeof ext === 'object') opts.map = ext;
+  else opts.ext = ext;
 
   return function *(next) {
-    opts.ext = engine;
     this.render = views(path, opts);
 
     yield next;

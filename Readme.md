@@ -10,13 +10,32 @@ Extending koa by adding a `render()` method has the advantage that you can defin
  
 ## Usage
  
-### views(path, engine, [options])
+### views(path, [ext, map])
  
-Use `views` in a koa middleware with given options and yield it to `this.body`.  Koa-render finds your given template relative to the `path` that you set. `engine` can be any templating engine that is supported by [consolidate.js](https://github.com/visionmedia/consolidate.js)
+* `ext`: define the default extension name. Defaults to `html`
+* `map`: custom mapping.
+ 
+Use `views` in a koa middleware with given options and yield it to `this.body`.
  
 ```javascript
+// Shorthand
 app.use(views('./example', 'jade'));
- 
+
+// Or
+
+app.use(views('./example', {
+  html: 'underscore'
+}));
+
+// You can use multiple engines too.
+
+app.use(views('./example', 'jade' {
+  html: 'underscore',
+  jade: 'jade'
+}));
+
+// And yield.
+
 app.use(router.get('/', function *(next) {
   this.body = yield this.render('index');
 }));
@@ -24,7 +43,7 @@ app.use(router.get('/', function *(next) {
 
 __Note__: Make sure that you define `views()` before you mount other koa apps.
  
-For a full example take a look at the ./example folder.
+For a full examples take a look at the ./examples folder.
  
 ## Licence
  

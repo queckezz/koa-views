@@ -1,0 +1,33 @@
+index.html<html>
+  <head>
+    <title>koa-render</title>
+    <script>
+        var foo = true;
+
+        if (foo) {
+           bar()
+        }
+
+        function bar() {
+          console.log('everything works.');
+        }
+    </script>
+    <style>
+      body {
+        font-family: Helvetica;
+        text-align: center;
+      }
+
+
+      h1 {
+        padding-top: 300px;
+        font-weight: 200;
+        color: #333;
+        font-size: 6em;
+      }
+    </style>
+  </head>
+  <body>
+    <h1><%= name %> ♥</h1>
+  </body>
+</html>

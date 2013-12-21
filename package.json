@@ -9,7 +9,8 @@
   "devDependencies": {
     "koa-route": "*",
     "koa": "*",
-    "jade": "*"
+    "jade": "*",
+    "underscore": "*"
   },
   "repository": {
     "type": "git",
