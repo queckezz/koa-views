@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -32,7 +31,7 @@ function render(path, ext, map) {
   if (typeof ext === 'object') opts.map = ext;
   else opts.ext = ext;
 
-  return function *(next) {
+  return function *renderView(next) {
     this.render = views(path, opts);
 
     yield next;
