@@ -25,7 +25,7 @@ function render(path, ext, map) {
 
   if (map) {
     opts.map = map;
-    opts.ext = ext
+    opts.ext = ext;
   }
 
   if (typeof ext === 'object') opts.map = ext;

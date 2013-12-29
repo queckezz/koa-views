@@ -29,7 +29,7 @@ app.use(views('./example', {
 
 // You can use multiple engines too.
 
-app.use(views('./example', 'jade' {
+app.use(views('./example', 'jade', {
   html: 'underscore',
   jade: 'jade'
 }));
