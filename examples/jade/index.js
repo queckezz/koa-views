@@ -6,7 +6,7 @@ var app = koa();
 
 // Jade.
 
-app.use(views('./examples/jade', 'jade'));
+app.use(views('.', 'jade'));
 
 // Routes.
 

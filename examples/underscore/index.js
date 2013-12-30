@@ -6,7 +6,7 @@ var app = koa();
 
 // Underscore.
 
-app.use(views('./examples/underscore', {
+app.use(views('.', {
   html: 'underscore'
 }));
 

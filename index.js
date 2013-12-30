@@ -2,7 +2,8 @@
  * Module dependencies.
  */
 
-var views = require('co-views');
+var debug = require('debug')('koa-render')
+var view = require('co-views');
 
 /**
  * Expose `render()`.
@@ -11,11 +12,11 @@ var views = require('co-views');
 module.exports = render;
 
 /**
- * Expose a `render()` method to koa.
+ * Expose a `render()` method to koa's context.
  *
  * @param {String} path
- * @param {String} ext [optional]
- * @param {Object} custom map [optional]
+ * @param {String} ext (optional)
+ * @param {Object} custom map (optional)
  * @return {Function} middleware
  * @api public
  */
@@ -31,8 +32,9 @@ function render(path, ext, map) {
   if (typeof ext === 'object') opts.map = ext;
   else opts.ext = ext;
 
-  return function *renderView(next) {
-    this.render = views(path, opts);
+  return function *views(next) {
+    this.render = view(path, opts);
+    debug('add render() function')
 
     yield next;
   }
