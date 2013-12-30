@@ -2,7 +2,7 @@
  * Module dependencies.
  */
 
-var debug = require('debug')('koa-render')
+var debug = require('debug')('koa-render');
 var view = require('co-views');
 
 /**
@@ -34,7 +34,7 @@ function render(path, ext, map) {
 
   return function *views(next) {
     this.render = view(path, opts);
-    debug('add render() function')
+    debug('add render() function');
 
     yield next;
   }
