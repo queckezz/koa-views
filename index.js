@@ -8,12 +8,21 @@ var view = require('co-views');
 var merge = require('merge');
 
 /**
- * Expose a `render()` method to koa's context.
+ * Add a render() method to koa that allows
+ * you to render almost any templating engine.
+ *
+ * Example:
+ *
+ *   app.use(views('./example', {
+ *     html: 'underscore'
+ *   }));
+ *
+ *   // in your route handler
+ *   this.body = yield this.render('index');
  *
  * @param {String} path
  * @param {String} ext (optional)
  * @param {Object} opts (optional)
- * 
  * @return {Function} middleware
  * @api public
  */
@@ -37,13 +46,12 @@ module.exports = function (path, ext, opts) {
 }
 
 /**
- * Generates a `co-views` fn with global
- * locals as parameter
+ * Determine `render()` function.
  * 
  * @param {String} path
  * @param {Object} opts
- * 
  * @return {Generator} view
+ * @api private
  */
 
 function render (path, opts) {
@@ -52,7 +60,7 @@ function render (path, opts) {
   return function (file, locals) {
     // merge global with local locals.
     locals = merge(opts.locals, locals);
-    
+
     view = view(path, opts);
     debug('render %s with locals %j and options %j', file, locals, opts);
     return view(file, locals);
