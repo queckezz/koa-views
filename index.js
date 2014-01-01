@@ -31,9 +31,11 @@ function render(path, ext, map) {
 
   if (typeof ext === 'object') opts.map = ext;
   else opts.ext = ext;
+  
+  var renderView = view(path, opts);
 
   return function *views(next) {
-    this.render = view(path, opts);
+    this.render = renderView;
     debug('add render() function');
 
     yield next;
