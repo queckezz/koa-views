@@ -7,7 +7,13 @@ var app = koa();
 // Underscore.
 
 app.use(views('.', {
-  html: 'underscore'
+  map: {
+    html: 'underscore'
+  },
+  locals: {
+    title: 'with underscore'
+  },
+  cache: false
 }));
 
 // Routes.
