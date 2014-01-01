@@ -19,14 +19,14 @@ var merge = require('merge');
  */
 
 module.exports = function (path, ext, opts) {
-  debug('add render() function');
-  opts = opts || {}
+  debug('add render() method to `this.ctx`');
+  opts = opts || {};
 
   if (typeof ext === 'object') opts = ext;
   else opts.ext = ext;
 
   // get render function
-  render = render(path, opts)
+  render = render(path, opts);
 
   // middleware
   return function *views(next) {
@@ -50,14 +50,11 @@ function render (path, opts) {
   if (!opts.locals) return view(path, opts);
 
   return function (file, locals) {
-
     // merge global with local locals.
     locals = merge(opts.locals, locals);
-
-    delete opts.locals;
+    
     view = view(path, opts);
     debug('render %s with locals %j and options %j', file, locals, opts);
-
     return view(file, locals);
   }
 }
