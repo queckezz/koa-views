@@ -16,7 +16,7 @@ Extending koa by adding a `render()` method has the advantage that you can defin
 * `opts`:
 
   * `cache`, `map` all these options go straigt to [co-views](https://github.com/visionmedia/co-views)
-    * `locals` this is a special type of option which allows you to define global locals for each of your views/templates
+  * `locals` this is a special type of option which allows you to define global locals for each of your views/templates
  
 Use `views()` in a koa middleware with given options and yield it to `this.body`.
 
