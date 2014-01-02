@@ -61,8 +61,7 @@ function render (path, opts) {
     // merge global with local locals.
     locals = merge(opts.locals, locals);
 
-    view = view(path, opts);
     debug('render %s with locals %j and options %j', file, locals, opts);
-    return view(file, locals);
+    return view(path, opts)(file, locals);
   }
 }
