@@ -10,17 +10,20 @@ Extending koa by adding a `render()` method has the advantage that you can defin
  
 ## Usage
  
-### views(path, [ext, map])
+### views(path, [ext, opts])
  
 * `ext`: define the default extension name. Defaults to `html`
-* `map`: custom mapping.
+* `opts`:
+
+  * `cache`, `map` all these options go straigt to [co-views](https://github.com/visionmedia/co-views)
+    * `locals` this is a special type of option which allows you to define global locals for each of your views/templates
  
-Use `views` in a koa middleware with given options and yield it to `this.body`.
+Use `views()` in a koa middleware with given options and yield it to `this.body`.
 
 If you use an engine that has the same extension as the engine itself you can use a shorthand
 
 ```javascript
-	app.use(views('./example', 'jade'));
+  app.use(views('./example', 'jade'));
     
     // in your route handler
     this.body = yield this.render('index');
@@ -30,7 +33,9 @@ otherwise you can `map` an extension to an engine. In this case we map all files
 
 ```javascript
 app.use(views('./example', {
-  html: 'underscore'
+  map: {
+    html: 'underscore'
+  }
 }));
 
 // in your route handler
@@ -41,8 +46,10 @@ You can use different engines throughout your app just by mapping different exte
 
 ```javascript
 app.use(views('./example', 'jade', {
-  html: 'underscore',
-  jade: 'jade'
+  map: {
+    html: 'underscore',
+    jade: 'jade'
+  }
 }));
 
 // route: A (renders index.jade)
