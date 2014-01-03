@@ -2,11 +2,11 @@
  
 Add a `render()` method to koa that allows you to render almost any templating engine.
  
-Extending koa by adding a `render()` method has the advantage that you can define your views settings once and have them available throughout your app, even when you `mount()` another app with koa-mount.
+Extending koa by adding a `render()` method has the advantage, that you can define your views settings once and have them available throughout your app. Another benefit is that you can specify global locals for your templates.
  
 ## Installation
  
-    $ npm i --save koa-render
+    $ npm install koa-render
  
 ## Usage
  
@@ -14,13 +14,12 @@ Extending koa by adding a `render()` method has the advantage that you can defin
  
 * `ext`: define the default extension name. Defaults to `html`
 * `opts`:
-
-  * `cache`, `map` all these options go straigt to [co-views](https://github.com/visionmedia/co-views)
-  * `locals` this is a special type of option which allows you to define global locals for each of your views/templates
+  * `cache`, `map` all these options go straight to [co-views](https://github.com/visionmedia/co-views)
+  * `locals` Allows you to define global locals for each of your views/templates
  
 Use `views()` in a koa middleware with given options and yield it to `this.body`.
 
-If you use an engine that has the same extension as the engine itself you can use a shorthand
+If you use an engine that has the same extension as the engine itself you can use a shorthand:
 
 ```javascript
   app.use(views('./example', 'jade'));
@@ -29,7 +28,7 @@ If you use an engine that has the same extension as the engine itself you can us
     this.body = yield this.render('index');
 ```
 
-otherwise you can `map` an extension to an engine. In this case we map all files with the extension `.html` to underscore.
+otherwise you can `map` an extension to an engine. In this case we map all files with the extension `.html` to underscore:
 
 ```javascript
 app.use(views('./example', {
@@ -42,7 +41,7 @@ app.use(views('./example', {
 this.body = yield this.render('index');
 ```
 
-You can use different engines throughout your app just by mapping different extension names to engines.
+You can use different engines throughout your app just by mapping different extension names to engines:
 
 ```javascript
 app.use(views('./example', 'jade', {
