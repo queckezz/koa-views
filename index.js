@@ -3,7 +3,7 @@
  * Module dependencies.
  */
 
-var debug = require('debug')('koa-render');
+var debug = require('debug')('koa-views');
 var relative = require('path').relative;
 var dirname = require('path').dirname;
 var views = require('co-views');
