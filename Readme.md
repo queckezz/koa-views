@@ -1,67 +1,61 @@
-## koa-render
- 
-Add a `render()` method to koa that allows you to render almost any templating engine.
- 
-Extending koa by adding a `render()` method has the advantage, that you can define your views settings once and have them available throughout your app. Another benefit is that you can specify global locals for your templates.
- 
+## koa views
+
+Render your views with almost any templating engine.
+
 ## Installation
- 
-    $ npm install koa-render
- 
-## Usage
- 
-### views(path, [ext, opts])
- 
-* `ext`: define the default extension name. Defaults to `html`
-* `opts`:
-  * `cache`, `map` all these options go straight to [co-views](https://github.com/visionmedia/co-views)
-  * `locals` Allows you to define global locals for each of your views/templates
- 
-Use `views()` in a koa middleware with given options and yield it to `this.body`.
 
-If you use an engine that has the same extension as the engine itself you can use a shorthand:
+    $ npm install koa-views
 
-```javascript
-  app.use(views('./example', 'jade'));
-    
-    // in your route handler
-    this.body = yield this.render('index');
+## Example
+
+```js
+views = views(__dirname, 'html')
+  .map('underscore', 'html')
+
+app.use(views.use())
 ```
 
-otherwise you can `map` an extension to an engine. In this case we map all files with the extension `.html` to underscore:
+After you have added `views` to your middleware stack you can start rendering your views.
 
-```javascript
-app.use(views('./example', {
-  map: {
-    html: 'underscore'
-  }
+```js
+app.use(function* (next) {
+  var n = this.session.views || 0;
+  this.session.views = ++n;
+
+  this.locals({
+    session: this.session
+  });
+
+  yield next;
+})
+
+app.use(router.get('/', function *(next) {
+  this.body = yield this.render('index', { user: 'John' });
 }));
-
-// in your route handler
-this.body = yield this.render('index');
 ```
 
-You can use different engines throughout your app just by mapping different extension names to engines:
+For full examples take a look at the `/examples` folder.
 
-```javascript
-app.use(views('./example', 'jade', {
-  map: {
-    html: 'underscore',
-    jade: 'jade'
-  }
-}));
+## API
 
-// route: A (renders index.jade)
-this.body = yield this.render('index');
+### views([path, ] ext [, opts])
 
-// route: B (renders index.html with underscore)
-this.body = yield this.render('index.html');
-```
+* `path`: Path to your views [__dirname]
+* `ext`: Default extension name to use when missing
+* `opts`: These options go straight to [co-views](https://github.com/visionmedia/co-views)
 
 __Note__: Make sure that you define `views()` before you mount other koa apps.
- 
-For full examples take a look at the examples folder.
- 
+
+### #map(engine, extension)
+
+Map `engine` to `ext`.
+
+This is only neccesarry if you want to map an engine to a different extension than the engine name itself.
+
+### #use()
+
+Mount to middleware.
+
 ## Licence
- 
+
 MIT
