@@ -78,13 +78,13 @@ Views.prototype.use = function () {
     yield next;
   };
 
-  function locals (locals) {
-    this.locals = merge(this.locals, locals);
+  function locals (obj) {
+    this.locals = merge(this.locals, obj);
   }
 
-  function render (file, locals) {
-    locals = merge(this.locals, locals);
-    return cons(file, locals);
+  function render (file, obj) {
+    obj = merge(this.locals, obj);
+    return cons(file, obj);
   }
 };
 
