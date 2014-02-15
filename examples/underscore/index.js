@@ -1,28 +1,57 @@
 
+var session = require('koa-session');
 var router = require('koa-route');
 var views = require('../../');
 var koa = require('koa');
 var app = koa();
 
-// Underscore.
+/**
+ * Session.
+ */
 
-app.use(views('.', {
-  map: {
-    html: 'underscore'
-  },
-  locals: {
-    title: 'with underscore'
-  },
-  cache: false
+app.keys = ['secrets'];
+app.use(session());
+
+/**
+ * Setup views.
+ */
+
+views = views(__dirname, 'html')
+  .map('underscore', 'html')
+
+app.use(views.use())
+
+/**
+ * Setup locals.
+ */
+
+app.use(function* (next) {
+  var n = this.session.views || 0;
+  this.session.views = ++n;
+
+  this.locals({
+    session: this.session
+  });
+
+  // You can call .locals() multiple times and they get added up.
+  this.locals({
+    some: 'prop'
+  });
+
+  yield next;
+})
+
+/**
+ * Routes.
+ */
+
+app.use(router.get('/', function *(next) {
+  this.body = yield this.render('index', { user: 'John' });
 }));
 
-// Routes.
-
-app.use(router.get('/underscore', function *(next) {
-  this.body = yield this.render('index', { name: 'koa' });
-}));
-
-// Listen
+/**
+ * Listen.
+ */
 
 app.listen(3000);
 console.log('app running on port 3000');
