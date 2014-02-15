@@ -4,64 +4,99 @@
  */
 
 var debug = require('debug')('koa-render');
-var view = require('co-views');
-var merge = require('merge');
+var relative = require('path').relative;
+var dirname = require('path').dirname;
+var views = require('co-views');
 
 /**
- * Add a render() method to koa that allows
- * you to render almost any templating engine.
- *
- * Example:
- *
- *   app.use(views('./example', {
- *     html: 'underscore'
- *   }));
- *
- *   // in your route handler
- *   this.body = yield this.render('index');
- *
- * @param {String} path
- * @param {String} ext (optional)
- * @param {Object} opts (optional)
- * @return {Function} middleware
- * @api public
+ * Export `Views`.
  */
 
-module.exports = function (path, ext, opts) {
-  debug('add render() method to `this.ctx`');
-  opts = opts || {};
+module.exports = Views;
 
-  if (typeof ext === 'object') opts = ext;
-  else opts.ext = ext;
+/**
+ * Views constructor.
+ *
+ * @param {String} path (optional)
+ * @param {String} ext
+ * @param {Object} opts
+ */
 
-  // get render function
-  render = render(path, opts);
+function Views (path, ext, opts) {
+  if (!(this instanceof Views)) return new Views(path, ext, opts);
+  if (!opts) opts = {};
 
-  // middleware
-  return function *views(next) {
-    this.render = render;
-
-    yield next;
+  if (typeof ext == 'object' || typeof ext == 'undefined') {
+    ext = path;
+    path = dirname(module.parent.filename);
   }
+
+  debug('path `%s`', relative(process.cwd(), path));
+  debug('options `%s`', JSON.stringify(opts));
+
+  opts.default = ext;
+  this.path = path;
+  this.opts = opts;
+  this.locals = {};
 }
 
 /**
- * Determine `render()` function.
- * 
- * @param {String} path
- * @param {Object} opts
- * @return {Generator} view
- * @api private
+ * Map `engine` to `ext`.
+ * This is only neccesarry if you want to map an engine to
+ * a different extension than the engine name itself.
+ *
+ * @param {String} engine
+ * @param {String} ext
+ * @api public
  */
 
-function render (path, opts) {
-  if (!opts.locals) return view(path, opts);
+Views.prototype.map = function (engine, ext) {
+  debug('map `%s` to `%s`', engine, ext);
+  if (!this.opts.map) this.opts.map = {};
+  this.opts.map[ext] = engine;
+  return this;
+};
 
-  return function (file, locals) {
-    // merge global with local locals.
-    locals = merge(opts.locals, locals);
+/**
+ * Use `Views` in a middleware.
+ * This adds two new methods to koa's ctx:
+ *
+ *  - this.render() renders a views.
+ *  - this.locals() per request locals.
+ *
+ * @api public
+ */
 
-    debug('render %s with locals %j and options %j', file, locals, opts);
-    return view(path, opts)(file, locals);
+Views.prototype.use = function () {
+  var self = this;
+  var cons = views(this.path, this.opts);
+
+  return function* (next) {
+    // Add methods to koa's `ctx`
+    this.locals = locals.bind(self);
+    this.render = render.bind(self);
+    yield next;
+  };
+
+  function locals (locals) {
+    this.locals = merge(this.locals, locals);
   }
+
+  function render (file, locals) {
+    locals = merge(this.locals, locals);
+    return cons(file, locals);
+  }
+};
+
+/**
+ * Merge `a` with `b`
+ *
+ * @param {Object} a
+ * @param {Object} b
+ * @return {Object}
+ */
+
+function merge (a, b) {
+  for (var k in b) a[k] = b[k];
+  return a;
 }

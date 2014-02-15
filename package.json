@@ -4,15 +4,15 @@
   "description": "Add a `render()` method to koa that allows you to render almost any templating engine",
   "main": "index.js",
   "dependencies": {
-    "co-views": "*",
     "debug": "~0.7.4",
-    "merge": "git://github.com/yields/merge"
+    "co-views": "~0.2.0"
   },
   "devDependencies": {
-    "koa-route": "*",
-    "koa": "*",
-    "jade": "*",
-    "underscore": "*"
+    "koa-session": "~1.2.0",
+    "underscore": "~1.6.0",
+    "koa-route": "~1.0.2",
+    "koa": "~0.4.0",
+    "jade": "~1.1.5"
   },
   "repository": {
     "type": "git",
