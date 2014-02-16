@@ -16,10 +16,8 @@ app.use(session());
  * Setup views.
  */
 
-views = views(__dirname, 'html')
+views(app, 'html')
   .map('underscore', 'html')
-
-app.use(views.use())
 
 /**
  * Setup locals.
@@ -29,14 +27,14 @@ app.use(function* (next) {
   var n = this.session.views || 0;
   this.session.views = ++n;
 
-  this.locals({
+  this.locals = {
     session: this.session
-  });
+  };
 
-  // You can call .locals() multiple times and they get added up.
-  this.locals({
+  // You can define .locals() multiple times and they get added up.
+  this.locals = {
     some: 'prop'
-  });
+  };
 
   yield next;
 })
