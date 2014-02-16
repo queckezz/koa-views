@@ -4,32 +4,85 @@
  */
 
 var debug = require('debug')('koa-views');
+var merge = require('merge-descriptors');
 var relative = require('path').relative;
 var dirname = require('path').dirname;
-var views = require('co-views');
+var cons = require('co-views');
 
 /**
- * Export `Views`.
+ * Exports
+ *
+ * @param {Object} app
+ * @param {String} path (optional)
+ * @param {String} ext
+ * @param {Object} opts (optional)
  */
 
-module.exports = Views;
+module.exports = function (app, path, ext, opts) {
+  var views = new Views(path, ext, opts);
+  var locals = {};
+
+  merge(app.context, {
+
+    /**
+     * Get locals.
+     *
+     * @return {Object} locals
+     * @api public
+     */
+
+    get locals() {
+      return locals;
+    },
+
+    /**
+     * Extend `locals` with `obj`
+     *
+     * @param {Object} obj
+     * @api public
+     */
+
+    set locals(obj) {
+      combine(locals, obj);
+      debug('set locals to %s', JSON.stringify(locals));
+    }
+  });
+
+  /**
+   * Render `file` with `obj`.
+   *
+   * @param {String} file
+   * @param {Object} obj
+   * @api public
+   */
+
+  app.context.render = function (file, obj) {
+    var render = cons(views.path, views.opts);
+    combine(obj, locals);
+    return render(file, obj);
+  };
+
+  return views;
+};
 
 /**
  * Views constructor.
  *
  * @param {String} path (optional)
  * @param {String} ext
- * @param {Object} opts
+ * @param {Object} opts (optional)
+ * @api public
  */
 
 function Views (path, ext, opts) {
-  if (!(this instanceof Views)) return new Views(path, ext, opts);
-  if (!opts) opts = {};
 
   if (typeof ext == 'object' || typeof ext == 'undefined') {
+    opts = ext;
     ext = path;
     path = dirname(module.parent.filename);
   }
+
+  if (!opts) opts = {};
 
   debug('path `%s`', relative(process.cwd(), path));
   debug('options `%s`', JSON.stringify(opts));
@@ -58,45 +111,15 @@ Views.prototype.map = function (engine, ext) {
 };
 
 /**
- * Use `Views` in a middleware.
- * This adds two new methods to koa's ctx:
- *
- *  - this.render() renders a views.
- *  - this.locals() per request locals.
- *
- * @api public
- */
-
-Views.prototype.use = function () {
-  var self = this;
-  var cons = views(this.path, this.opts);
-
-  return function* (next) {
-    // Add methods to koa's `ctx`
-    this.locals = locals.bind(self);
-    this.render = render.bind(self);
-    yield next;
-  };
-
-  function locals (obj) {
-    this.locals = merge(this.locals, obj);
-  }
-
-  function render (file, obj) {
-    obj = merge(this.locals, obj);
-    return cons(file, obj);
-  }
-};
-
-/**
- * Merge `a` with `b`
+ * combine obj `a` with `b`.
  *
  * @param {Object} a
  * @param {Object} b
  * @return {Object}
+ * @api private
  */
 
-function merge (a, b) {
+function combine (a, b) {
   for (var k in b) a[k] = b[k];
   return a;
 }
