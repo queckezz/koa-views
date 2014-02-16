@@ -7,6 +7,7 @@ var debug = require('debug')('koa-views');
 var merge = require('merge-descriptors');
 var relative = require('path').relative;
 var dirname = require('path').dirname;
+var delegate = require('delegates');
 var cons = require('co-views');
 
 /**
@@ -56,11 +57,18 @@ module.exports = function (app, path, ext, opts) {
    * @api public
    */
 
-  app.context.render = function (file, obj) {
+  app.response.render = function (file, obj) {
     var render = cons(views.path, views.opts);
     combine(obj, locals);
     return render(file, obj);
   };
+
+  /**
+   * Delegate `res.render()` to context.
+   */
+
+  delegate(app.context, 'response')
+    .method('render')
 
   return views;
 };
