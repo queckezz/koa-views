@@ -1,4 +1,9 @@
 
+## 1.1.0 / 2.16.2014
+
+ * Use a koa instance to extend koa itself instead of adding a each method on every request.
+ * `this.locals =` instead of `this.locals()`
+
 ## 1.0.0 / 2.15.2014
 
  * Renamed project from `koa-render` to `koa-views`.
