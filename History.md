@@ -1,4 +1,9 @@
 
+## 1.2.0 / 2.22.2014
+
+ * use middleware instead of direct app reference
+ * `this.body = yield this.render()` -> `yield this.render()`
+
 ## 1.1.0 / 2.16.2014
 
  * Use a koa instance to extend koa itself instead of adding a each method on every request.
