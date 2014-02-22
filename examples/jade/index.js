@@ -16,11 +16,7 @@ app.use(session());
  * Setup views.
  */
 
-views(app, 'jade');
-
-/**
- * Setup locals.
- */
+app.use(views(__dirname, 'jade', {}));
 
 app.use(function* (next) {
   var n = this.session.views || 0;
@@ -35,20 +31,10 @@ app.use(function* (next) {
     some: 'prop'
   };
 
-  yield next;
-})
-
-/**
- * Routes.
- */
-
-app.use(router.get('/', function *(next) {
-  this.body = yield this.render('index', { user: 'John' });
-}));
-
-/**
- * Listen.
- */
+  yield this.render('index', {
+    user: 'John'
+  });
+});
 
 app.listen(3000);
 console.log('app running on port 3000');

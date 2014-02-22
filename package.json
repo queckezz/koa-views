@@ -5,9 +5,10 @@
   "main": "index.js",
   "dependencies": {
     "debug": "~0.7.4",
-    "co-views": "~0.2.0",
     "merge-descriptors": "0.0.2",
-    "delegates": "0.0.3"
+    "delegates": "0.0.3",
+    "co-views": "~0.2.0",
+    "co": "~3.0.4"
   },
   "devDependencies": {
     "koa-session": "~1.2.0",

@@ -10,113 +10,85 @@ var dirname = require('path').dirname;
 var delegate = require('delegates');
 var cons = require('co-views');
 
-/**
- * Exports
- *
- * @param {Object} app
- * @param {String} path (optional)
- * @param {String} ext
- * @param {Object} opts (optional)
- */
+module.exports = views;
 
-module.exports = function (app, path, ext, opts) {
-  var views = new Views(path, ext, opts);
-  var locals = {};
-
-  merge(app.context, {
-
-    /**
-     * Get locals.
-     *
-     * @return {Object} locals
-     * @api public
-     */
-
-    get locals() {
-      return locals;
-    },
-
-    /**
-     * Extend `locals` with `obj`
-     *
-     * @param {Object} obj
-     * @api public
-     */
-
-    set locals(obj) {
-      combine(locals, obj);
-      debug('set locals to %s', JSON.stringify(locals));
-    }
-  });
-
-  /**
-   * Render `file` with `obj`.
-   *
-   * @param {String} file
-   * @param {Object} obj
-   * @api public
-   */
-
-  app.response.render = function (file, obj) {
-    var render = cons(views.path, views.opts);
-    combine(obj, locals);
-    return render(file, obj);
-  };
-
-  /**
-   * Delegate `res.render()` to context.
-   */
-
-  delegate(app.context, 'response')
-    .method('render')
-
-  return views;
-};
-
-/**
- * Views constructor.
- *
- * @param {String} path (optional)
- * @param {String} ext
- * @param {Object} opts (optional)
- * @api public
- */
-
-function Views (path, ext, opts) {
-
-  if (typeof ext == 'object' || typeof ext == 'undefined') {
-    opts = ext;
+function views(path, ext, map) {
+  if (typeof ext == 'object' || !ext) {
+    map = ext;
     ext = path;
     path = dirname(module.parent.filename);
   }
 
-  if (!opts) opts = {};
+  if (!map) map = {};
 
   debug('path `%s`', relative(process.cwd(), path));
-  debug('options `%s`', JSON.stringify(opts));
+  debug('map `%s`', JSON.stringify(map));
 
-  opts.default = ext;
-  this.path = path;
-  this.opts = opts;
-  this.locals = {};
+  return function* (next) {
+    var res = this.app.response;
+    var ctx = this.app.context;
+    if (res.render && ctx.locals) return;
+
+    this._locals = {};
+
+    merge(ctx, {
+      /**
+       * Get locals.
+       *
+       * @return {Object} locals
+       * @api public
+       */
+
+      get locals() {
+        return this._locals;
+      },
+
+      /**
+       * Extend req locals with new locals.
+       *
+       * @param {Object} locals
+       * @api public
+       */
+
+      set locals(locals) {
+        combine(this._locals, locals);
+        debug('set locals to %s', JSON.stringify(this._locals));
+      }
+    });
+
+    /**
+     * Render `view` with `locals`.
+     *
+     * @param {String} view
+     * @param {Object} locals
+     * @api public
+     */
+
+    res.render = function (view, locals) {
+      if (!locals) locals = {};
+      combine(locals, this.ctx.locals);
+
+      var render = cons(path, {
+        default: ext,
+        map: map
+      });
+
+      return function* () {
+        debug('render `%s.%s` with %s', view, ext, JSON.stringify(locals));
+        this.body = yield render(view, locals);
+      }
+    };
+
+    /**
+     * Delegate `res.render()` to this.ctx.
+     */
+
+    delegate(ctx, 'response')
+      .method('render');
+
+    yield next;
+  }
 }
-
-/**
- * Map `engine` to `ext`.
- * This is only neccesarry if you want to map an engine to
- * a different extension than the engine name itself.
- *
- * @param {String} engine
- * @param {String} ext
- * @api public
- */
-
-Views.prototype.map = function (engine, ext) {
-  debug('map `%s` to `%s`', engine, ext);
-  if (!this.opts.map) this.opts.map = {};
-  this.opts.map[ext] = engine;
-  return this;
-};
 
 /**
  * combine obj `a` with `b`.

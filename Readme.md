@@ -1,59 +1,49 @@
 ## koa views
 
-Render your views with almost any templating engine.
+Render views with almost any templating engine.
 
 ## Installation
 
-    $ npm install koa-views
+```
+$ npm install koa-views
+```
 
 ## Example
 
 ```js
-views(app, 'jade')
-  .map('underscore', 'html')
-  .map('hogan', 'md')
-```
+app.use(views('./views', 'jade', {
+  html: underscore
+}));
 
-After that you can add per-request locals.
-
-```js
 app.use(function* (next) {
   this.locals = {
-    session: this.session
+    session: this.session,
+    title: 'app'
   };
 
-  yield next;
+  console.log(this.locals); // {session: {_id: ...}, title: app}
+
+  // Render html with underscore.
+  yield this.render('index.html', {
+    user: 'John'
+  });
+
+  // Render jade.
+  yield this.render('index', {
+    user: 'Prick'
+  });
 });
 ```
-And then you can yield to `this.body`.
 
-```js
-// Render html with underscore
-this.body = yield this.render('index.html', { user: 'John' });
-
-// Render jade
-this.body = yield this.render('index', { user: 'Prick' });
-
-// Render markdown with hogan
-this.body = yield this.render('index.md');
-```
-
-For full examples take a look at the `/examples` folder.
+For full examples take a look at the [./examples](./examples) folder.
 
 ## API
 
-### views(app, [ ,path, ] ext [, opts])
+### views([path, ] ext [, map])
 
-* `app`: Koa instance
 * `path`: Path to your views [__dirname]
-* `ext`: Default extension name to use when missing
-* `opts`: These options go straight to [co-views](https://github.com/visionmedia/co-views)
-
-### .map(engine, extension)
-
-Map `engine` to `ext`.
-
-This is only neccesarry if you want to map an engine to a different extension than the engine name itself.
+* `ext`: Default extension name to use when none specified
+* `map`: Map an engine to a extension. This is only necessary if you want to map an engine to a different extension than the engine name itself.
 
 ## Licence
 
