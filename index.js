@@ -10,7 +10,21 @@ var dirname = require('path').dirname;
 var delegate = require('delegates');
 var cons = require('co-views');
 
+/**
+ * Exports `views`.
+ */
+
 module.exports = views;
+
+/**
+ * Add `render` method and define `locals` getter and
+ * setters.
+ *
+ * @param {String} path (optional)
+ * @param {String} ext
+ * @param {Object} map (optional)
+ * @api public
+ */
 
 function views(path, ext, map) {
   if (typeof ext == 'object' || !ext) {
@@ -61,6 +75,7 @@ function views(path, ext, map) {
      *
      * @param {String} view
      * @param {Object} locals
+     * @return {GeneratorFunction}
      * @api public
      */
 
