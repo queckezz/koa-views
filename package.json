@@ -1,6 +1,6 @@
 {
   "name": "koa-views",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Render views with almost any templating engine",
   "main": "index.js",
   "dependencies": {
@@ -18,17 +18,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/queckezz/koa-render"
+    "url": "https://github.com/queckezz/koa-views"
   },
   "keywords": [
     "koa",
     "render",
     "views",
-    "app-wide"
+    "app-wide",
+    "templating",
+    "templates"
   ],
   "author": "queckezz",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/queckezz/koa-render/issues"
+    "url": "https://github.com/queckezz/koa-views/issues"
   }
 }
