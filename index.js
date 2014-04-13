@@ -38,7 +38,7 @@ function views(path, ext, map) {
   debug('path `%s`', relative(process.cwd(), path));
   debug('map `%s`', JSON.stringify(map));
 
-  return function* (next) {
+  return function *views(next) {
     var res = this.app.response;
     var ctx = this.app.context;
     if (res.render && ctx.locals) return;
