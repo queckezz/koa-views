@@ -1,6 +1,7 @@
 
 ## unreleased / 4.28.2014
 
+* better debug messages
 * move default ext to options
 * name middleware
 * change locals behavior so they don't get set twice

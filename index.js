@@ -9,6 +9,7 @@ var resolve = require('path').resolve;
 var dirname = require('path').dirname;
 var delegate = require('delegates');
 var join = require('path').join;
+var fmt = require('util').format;
 var cons = require('co-views');
 
 /**
@@ -29,8 +30,11 @@ module.exports = function (path, opts) {
 
   if (!opts) opts = {};
 
-  debug('path `%s`', path);
-  debug('map `%s`', JSON.stringify(opts.map));
+  for (var prop in opts) {
+    var opt = opts[prop];
+    if (opt == opts.map) opt = JSON.stringify(opt);
+    debug(fmt('set `%s` to `%s`', prop, opt));
+  }
 
   return function *views (next) {
     if (this.locals && this.render) return;
@@ -57,7 +61,8 @@ module.exports = function (path, opts) {
       var render = cons(path, opts);
 
       return function *() {
-        debug('render `%s.%s` with %s', view, opts.default, JSON.stringify(locals));
+        var ext = opts.default;
+        debug(fmt('render `%s.%s` with %j', view, ext, locals));
         this.body = yield render(view, locals);
       }
     }
