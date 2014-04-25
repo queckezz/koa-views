@@ -33,36 +33,13 @@ module.exports = function (path, ext, map) {
   debug('map `%s`', JSON.stringify(map));
 
   return function *views (next) {
-    var res = this.app.response;
-    var ctx = this.app.context;
-    if (res.render && ctx.locals) return;
+    if (this.locals && this.response) return;
 
-    this._locals = {};
+    /**
+     * App-specific `locals`.
+     */
 
-    merge(ctx, {
-      /**
-       * Get locals.
-       *
-       * @return {Object} locals
-       * @api public
-       */
-
-      get locals() {
-        return this._locals;
-      },
-
-      /**
-       * Extend req locals with new locals.
-       *
-       * @param {Object} locals
-       * @api public
-       */
-
-      set locals(locals) {
-        combine(this._locals, locals);
-        debug('set locals to %s', JSON.stringify(this._locals));
-      }
-    });
+    this.locals = {}
 
     /**
      * Render `view` with `locals`.
@@ -73,34 +50,27 @@ module.exports = function (path, ext, map) {
      * @api public
      */
 
-    res.render = function (view, locals) {
+    this.render = function (view, locals) {
       if (!locals) locals = {};
-      combine(locals, this.ctx.locals);
+      merge(locals, this.locals);
 
       var render = cons(path, {
         default: ext,
         map: map
       });
 
-      return function* () {
+      return function *() {
         debug('render `%s.%s` with %s', view, ext, JSON.stringify(locals));
         this.body = yield render(view, locals);
       }
-    };
-
-    /**
-     * Delegate `res.render()` to this.ctx.
-     */
-
-    delegate(ctx, 'response')
-      .method('render');
+    }
 
     yield next;
   }
 }
 
 /**
- * combine obj `a` with `b`.
+ * merge obj `a` with `b`.
  *
  * @param {Object} a
  * @param {Object} b
@@ -108,7 +78,7 @@ module.exports = function (path, ext, map) {
  * @api private
  */
 
-function combine (a, b) {
+function merge (a, b) {
   for (var k in b) a[k] = b[k];
   return a;
 }
