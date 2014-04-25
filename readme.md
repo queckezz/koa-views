@@ -14,6 +14,7 @@ $ npm install koa-views
 app.use(views('views', {
   default: 'jade',
   cache: true,
+
   map: {
     html: underscore
   }
