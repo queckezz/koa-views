@@ -11,12 +11,6 @@ var delegate = require('delegates');
 var cons = require('co-views');
 
 /**
- * Exports `views`.
- */
-
-module.exports = views;
-
-/**
  * Add `render` method and define `locals` getter and
  * setters.
  *
@@ -26,7 +20,7 @@ module.exports = views;
  * @api public
  */
 
-function views(path, ext, map) {
+module.exports = function (path, ext, map) {
   if (typeof ext == 'object' || !ext) {
     map = ext;
     ext = path;
@@ -38,7 +32,7 @@ function views(path, ext, map) {
   debug('path `%s`', relative(process.cwd(), path));
   debug('map `%s`', JSON.stringify(map));
 
-  return function* (next) {
+  return function *views (next) {
     var res = this.app.response;
     var ctx = this.app.context;
     if (res.render && ctx.locals) return;
