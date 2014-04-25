@@ -1,5 +1,5 @@
 
-## unreleased / 4.28.2014
+## 2.0.0 / 4.28.2014
 
 * default extension to .html
 * better debug messages
