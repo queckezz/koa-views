@@ -25,8 +25,14 @@ module.exports = function (path, opts) {
   var base = dirname(module.parent.filename)
 
   // set path relative to the directory the function was called + path
-  if (!path || typeof path == 'object') path = base;
-  else path = resolve(base, path);
+  if (!path || typeof path == 'object') {
+    opts = path;
+    path = base;
+  } else {
+    path = resolve(base, path);
+  }
+
+  console.log('wat', path);
 
   if (!opts) opts = {};
 
