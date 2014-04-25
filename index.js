@@ -33,7 +33,7 @@ module.exports = function (path, ext, map) {
   debug('map `%s`', JSON.stringify(map));
 
   return function *views (next) {
-    if (this.locals && this.response) return;
+    if (this.locals && this.render) return;
 
     /**
      * App-specific `locals`.
