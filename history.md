@@ -1,4 +1,9 @@
 
+## unreleased / 4.28.2014
+
+* name middleware
+* change locals behavior so they don't get set twice
+
 ## 1.2.0 / 2.22.2014
 
  * use middleware instead of direct app reference
