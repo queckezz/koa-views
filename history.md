@@ -1,6 +1,7 @@
 
 ## unreleased / 4.28.2014
 
+* default extension to .html
 * better debug messages
 * move default ext to options
 * name middleware

@@ -30,6 +30,9 @@ module.exports = function (path, opts) {
 
   if (!opts) opts = {};
 
+  // default extension to `html`
+  if (!opts.default) opts.default = 'html';
+
   for (var prop in opts) {
     var opt = opts[prop];
     if (opt == opts.map) opt = JSON.stringify(opt);
