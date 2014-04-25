@@ -3,6 +3,7 @@
 
 * name middleware
 * change locals behavior so they don't get set twice
+* fix path confusion, hopefully.
 
 ## 1.2.0 / 2.22.2014
 

@@ -5,9 +5,9 @@
 
 var debug = require('debug')('koa-views');
 var merge = require('merge-descriptors');
-var relative = require('path').relative;
 var dirname = require('path').dirname;
 var delegate = require('delegates');
+var join = require('path').join;
 var cons = require('co-views');
 
 /**
@@ -21,15 +21,18 @@ var cons = require('co-views');
  */
 
 module.exports = function (path, ext, map) {
+  var base = dirname(module.parent.filename)
+  if (path) path = join(base, path);
+
   if (typeof ext == 'object' || !ext) {
     map = ext;
     ext = path;
-    path = dirname(module.parent.filename);
+    path = base;
   }
 
   if (!map) map = {};
 
-  debug('path `%s`', relative(process.cwd(), path));
+  debug('path `%s`', path);
   debug('map `%s`', JSON.stringify(map));
 
   return function *views (next) {
