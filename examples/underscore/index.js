@@ -28,11 +28,6 @@ app.use(function* (next) {
     session: this.session
   };
 
-  // You can define .locals() multiple times and they get added up.
-  this.locals = {
-    some: 'prop'
-  };
-
   yield this.render('index', {
     user: 'John'
   });
