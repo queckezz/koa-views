@@ -4,12 +4,10 @@
  */
 
 var debug = require('debug')('koa-views');
-var merge = require('merge-descriptors');
 var resolve = require('path').resolve;
 var dirname = require('path').dirname;
-var delegate = require('delegates');
-var join = require('path').join;
 var fmt = require('util').format;
+var join = require('path').join;
 var cons = require('co-views');
 
 /**
