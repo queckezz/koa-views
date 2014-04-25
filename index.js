@@ -30,8 +30,6 @@ module.exports = function (path, opts) {
     path = resolve(base, path);
   }
 
-  console.log('wat', path);
-
   if (!opts) opts = {};
 
   // default extension to `html`
