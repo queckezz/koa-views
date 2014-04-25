@@ -16,8 +16,11 @@ app.use(session());
  * Setup views.
  */
 
-app.use(views('html', {
-  html: 'underscore'
+app.use(views({
+  chache: true,
+  map: {
+    html: 'underscore'
+  }
 }));
 
 app.use(function* (next) {

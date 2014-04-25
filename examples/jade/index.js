@@ -16,7 +16,9 @@ app.use(session());
  * Setup views.
  */
 
-app.use(views(__dirname, 'jade'));
+app.use(views(__dirname, {
+  default: 'jade'
+}));
 
 app.use(function* (next) {
   var n = this.session.views || 0;

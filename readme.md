@@ -11,8 +11,12 @@ $ npm install koa-views
 ## Example
 
 ```js
-app.use(views('./views', 'jade', {
-  html: underscore
+app.use(views('views', {
+  default: 'jade',
+  cache: true,
+  map: {
+    html: underscore
+  }
 }));
 
 app.use(function* (next) {
@@ -39,11 +43,16 @@ For full examples take a look at the [./examples](./examples) folder.
 
 ## API
 
-### views([path, ] ext [, map])
+### views([path, opts])
 
-* `path`: Path to your views [__dirname]
-* `ext`: Default extension name to use when none specified
-* `map`: Map an engine to a extension. This is only necessary if you want to map an engine to a different extension than the engine name itself.
+* `path (__dirname)`: __dirname + where your views are located
+* `opts`: these options go straight to [co-views](https://github.com/visionmedia/co-views).
+
+## Debug
+
+```bash
+$ DEBUG=koa-views node --harmony-generators server.js
+```
 
 ## Licence
 
