@@ -5,6 +5,7 @@
 
 var debug = require('debug')('koa-views');
 var merge = require('merge-descriptors');
+var resolve = require('path').resolve;
 var dirname = require('path').dirname;
 var delegate = require('delegates');
 var join = require('path').join;
@@ -15,25 +16,21 @@ var cons = require('co-views');
  * setters.
  *
  * @param {String} path (optional)
- * @param {String} ext
- * @param {Object} map (optional)
+ * @param {Object} opts (optional)
  * @api public
  */
 
-module.exports = function (path, ext, map) {
+module.exports = function (path, opts) {
   var base = dirname(module.parent.filename)
-  if (path) path = join(base, path);
 
-  if (typeof ext == 'object' || !ext) {
-    map = ext;
-    ext = path;
-    path = base;
-  }
+  // set path relative to the directory the function was called + path
+  if (!path || typeof path == 'object') path = base;
+  else path = resolve(base, path);
 
-  if (!map) map = {};
+  if (!opts) opts = {};
 
   debug('path `%s`', path);
-  debug('map `%s`', JSON.stringify(map));
+  debug('map `%s`', JSON.stringify(opts.map));
 
   return function *views (next) {
     if (this.locals && this.render) return;
@@ -57,13 +54,10 @@ module.exports = function (path, ext, map) {
       if (!locals) locals = {};
       merge(locals, this.locals);
 
-      var render = cons(path, {
-        default: ext,
-        map: map
-      });
+      var render = cons(path, opts);
 
       return function *() {
-        debug('render `%s.%s` with %s', view, ext, JSON.stringify(locals));
+        debug('render `%s.%s` with %s', view, opts.default, JSON.stringify(locals));
         this.body = yield render(view, locals);
       }
     }
