@@ -7,6 +7,7 @@ var debug = require('debug')('koa-views');
 var resolve = require('path').resolve;
 var dirname = require('path').dirname;
 var fmt = require('util').format;
+var merge = require('deepmerge');
 var join = require('path').join;
 var cons = require('co-views');
 
@@ -62,7 +63,7 @@ module.exports = function (path, opts) {
 
     this.render = function (view, locals) {
       if (!locals) locals = {};
-      merge(locals, this.locals);
+      locals = merge(locals, this.locals);
 
       var render = cons(path, opts);
 
@@ -75,18 +76,4 @@ module.exports = function (path, opts) {
 
     yield next;
   }
-}
-
-/**
- * merge obj `a` with `b`.
- *
- * @param {Object} a
- * @param {Object} b
- * @return {Object}
- * @api private
- */
-
-function merge (a, b) {
-  for (var k in b) a[k] = b[k];
-  return a;
 }

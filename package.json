@@ -5,7 +5,8 @@
   "main": "index.js",
   "dependencies": {
     "debug": "~0.7.4",
-    "co-views": "~0.2.0"
+    "co-views": "~0.2.0",
+    "deepmerge": "^0.2.7"
   },
   "devDependencies": {
     "koa-session": "~1.2.0",
