@@ -1,6 +1,6 @@
 {
   "name": "koa-views",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Render views with almost any templating engine",
   "main": "index.js",
   "dependencies": {
