@@ -45,10 +45,11 @@ module.exports = function (path, opts) {
     if (this.locals && this.render) return;
 
     /**
-     * App-specific `locals`.
+     * App-specific `locals`, but honor upstream
+     * middlewares that may have already set this.locals.
      */
 
-    this.locals = {}
+    this.locals = this.locals || {};
 
     /**
      * Render `view` with `locals`.
