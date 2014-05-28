@@ -42,6 +42,26 @@ app.use(function* (next) {
 
 For full examples take a look at the [./examples](./examples) folder.
 
+## App-wide views
+
+Dependending on your choice of application structure, and to avoid
+duplicating code, you may wish to share the same view settings between
+all of your application pages. To do this, create a `views.js` module
+with your preferred settings:
+
+```js
+var views = require('koa-views');
+
+module.exports = function() {
+  return views('views', {
+    cache: true,
+    map: {
+      html: 'underscore'
+    }
+  });
+};
+```
+
 ## API
 
 ### views([path, opts])
