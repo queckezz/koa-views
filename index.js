@@ -71,6 +71,7 @@ module.exports = function (path, opts) {
         var ext = opts.default;
         debug(fmt('render `%s.%s` with %j', view, ext, locals));
         this.body = yield render(view, locals);
+        this.type = 'text/html';
       }
     }
 
