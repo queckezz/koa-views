@@ -17,7 +17,7 @@ app.use(session());
  */
 
 app.use(views({
-  chache: true,
+  cache: true,
 
   map: {
     html: 'underscore'
