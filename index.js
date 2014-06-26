@@ -57,7 +57,6 @@ module.exports = function (path, opts) {
      *
      * @param {String} view
      * @param {Object} locals
-     * @return {GeneratorFunction}
      * @api public
      */
 
