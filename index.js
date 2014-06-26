@@ -57,22 +57,18 @@ module.exports = function (path, opts) {
      *
      * @param {String} view
      * @param {Object} locals
-     * @return {GeneratorFunction}
      * @api public
      */
 
-    this.render = function (view, locals) {
+    this.render = function *(view, locals) {
       if (!locals) locals = {};
       locals = merge(locals, this.locals);
 
       var render = cons(path, opts);
-
-      return function *() {
-        var ext = opts.default;
-        debug(fmt('render `%s.%s` with %j', view, ext, locals));
-        this.body = yield render(view, locals);
-        this.type = 'text/html';
-      }
+      var ext = opts.default;
+      debug(fmt('render `%s.%s` with %j', view, ext, locals));
+      this.body = yield render(view, locals);
+      this.type = 'text/html';
     }
 
     yield next;
