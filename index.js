@@ -10,6 +10,7 @@ var fmt = require('util').format;
 var merge = require('deepmerge');
 var join = require('path').join;
 var cons = require('co-views');
+var send = require('koa-send');
 
 /**
  * Add `render` method and define `locals` getter and
@@ -69,8 +70,15 @@ module.exports = function (path, opts) {
 
       return function *() {
         var ext = opts.default;
-        debug(fmt('render `%s.%s` with %j', view, ext, locals));
-        this.body = yield render(view, locals);
+        var file = fmt('%s.%s', view, ext);
+        debug(fmt('render `%s` with %j', file, locals));
+
+        if (ext == 'html' && !opts.map) {
+          yield send(this, join(path, file));
+        } else {
+          this.body = yield render(view, locals);
+        }
+
         this.type = 'text/html';
       }
     }

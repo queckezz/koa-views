@@ -4,9 +4,10 @@
   "description": "Render views with almost any templating engine",
   "main": "index.js",
   "dependencies": {
-    "debug": "~0.7.4",
     "co-views": "~0.2.0",
-    "deepmerge": "^0.2.7"
+    "debug": "~0.7.4",
+    "deepmerge": "^0.2.7",
+    "koa-send": "^1.2.4"
   },
   "devDependencies": {
     "koa-session": "~1.2.0",
