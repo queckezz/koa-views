@@ -62,25 +62,21 @@ module.exports = function (path, opts) {
      * @api public
      */
 
-    this.render = function (view, locals) {
+    this.render = function *(view, locals) {
       if (!locals) locals = {};
       locals = merge(locals, this.locals);
+      var ext = opts.default;
+      var file = fmt('%s.%s', view, ext);
+      debug(fmt('render `%s` with %j', file, locals));
 
-      var render = cons(path, opts);
-
-      return function *() {
-        var ext = opts.default;
-        var file = fmt('%s.%s', view, ext);
-        debug(fmt('render `%s` with %j', file, locals));
-
-        if (ext == 'html' && !opts.map) {
-          yield send(this, join(path, file));
-        } else {
-          this.body = yield render(view, locals);
-        }
-
-        this.type = 'text/html';
+      if (ext == 'html' && !opts.map) {
+        yield send(this, join(path, file));
+      } else {
+        var render = cons(path, opts);
+        this.body = yield render(view, locals);
       }
+
+      this.type = 'text/html';
     }
 
     yield next;
