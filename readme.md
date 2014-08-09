@@ -1,14 +1,14 @@
-## koa-views
+# koa-views
 
 Render views with almost any templating engine.
 
-### installation
+## Installation
 
 ```
 $ npm install koa-views
 ```
 
-### example
+## Example
 
 ```js
 app.use(views('views', {
@@ -42,19 +42,19 @@ app.use(function* (next) {
 
 For full examples take a look at the [./examples](./examples) folder.
 
-### api
+## API
 
 #### `views([path, opts])`
 
 * `path (__dirname)`: __dirname + where your views are located
 * `opts`: these options go straight to [co-views](https://github.com/visionmedia/co-views).
 
-### debug
+## Debug
 
 ```bash
 $ DEBUG=koa-views node --harmony-generators server.js
 ```
 
-### licence
+## Licence
 
 MIT
