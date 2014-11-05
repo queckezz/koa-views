@@ -11,6 +11,7 @@ $ npm install koa-views
 ## Example
 
 ```js
+// Must be used before any router is used
 app.use(views('views', {
   default: 'jade',
   cache: true,
