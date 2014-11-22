@@ -28,9 +28,7 @@ app.use(function* (next) {
   var n = this.session.views || 0;
   this.session.views = ++n;
 
-  this.locals = {
-    session: this.session
-  };
+  this.state.session = this.session;
 
   yield this.render('index', {
     user: 'John'
