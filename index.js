@@ -13,8 +13,7 @@ var cons = require('co-views');
 var send = require('koa-send');
 
 /**
- * Add `render` method and define `locals` getter and
- * setters.
+ * Add `render` method
  *
  * @param {String} path (optional)
  * @param {Object} opts (optional)
@@ -22,10 +21,10 @@ var send = require('koa-send');
  */
 
 module.exports = function (path, opts) {
-  var base = dirname(module.parent.filename)
+  var base = dirname(module.parent.filename);
 
   // set path relative to the directory the function was called + path
-  if (!path || typeof path == 'object') {
+  if (!path || typeof path === 'object') {
     opts = path;
     path = base;
   } else {
@@ -39,19 +38,12 @@ module.exports = function (path, opts) {
 
   for (var prop in opts) {
     var opt = opts[prop];
-    if (opt == opts.map) opt = JSON.stringify(opt);
+    if (opt === opts.map) opt = JSON.stringify(opt);
     debug(fmt('set `%s` to `%s`', prop, opt));
   }
 
   return function *views (next) {
-    if (this.locals && this.render) return;
-
-    /**
-     * App-specific `locals`, but honor upstream
-     * middlewares that may have already set this.locals.
-     */
-
-    this.locals = this.locals || {};
+    if (this.render) return;
 
     /**
      * Render `view` with `locals`.
@@ -63,13 +55,13 @@ module.exports = function (path, opts) {
      */
 
     this.render = function *(view, locals) {
-      if (!locals) locals = {};
-      locals = merge(locals, this.locals);
+      locals = locals || {};
+      locals = merge(locals, this.state);
       var ext = opts.default;
       var file = fmt('%s.%s', view, ext);
       debug(fmt('render `%s` with %j', file, locals));
 
-      if (ext == 'html' && !opts.map) {
+      if (ext === 'html' && !opts.map) {
         yield send(this, join(path, file));
       } else {
         var render = cons(path, opts);
@@ -77,7 +69,7 @@ module.exports = function (path, opts) {
       }
 
       this.type = 'text/html';
-    }
+    };
 
     yield next;
   }
