@@ -12,8 +12,6 @@
   "devDependencies": {
     "jade": "^1.8.0",
     "koa": "~0.4.0",
-    "koa-route": "~1.0.2",
-    "koa-session": "~1.2.0",
     "mocha": "^2.0.1",
     "should": "^4.3.0",
     "supertest": "^0.15.0",
