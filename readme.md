@@ -13,9 +13,6 @@ $ npm install koa-views
 ```js
 // Must be used before any router is used
 app.use(views('views', {
-  default: 'jade',
-  cache: true,
-
   map: {
     html: underscore
   }
@@ -27,16 +24,8 @@ app.use(function* (next) {
     title: 'app'
   };
 
-  console.log(this.locals); // {session: {_id: ...}, title: app}
-
-  // Render html with underscore.
-  yield this.render('index.html', {
+  yield this.render('user', {
     user: 'John'
-  });
-
-  // Render jade.
-  yield this.render('index', {
-    user: 'Prick'
   });
 });
 ```
