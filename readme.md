@@ -45,6 +45,6 @@ For more examples take a look at the [tests](./test/index.js)
 $ DEBUG=koa-views node --harmony-generators server.js
 ```
 
-## Licence
+## License
 
-[MIT](./licence)
+[MIT](./license)
