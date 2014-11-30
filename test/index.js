@@ -26,7 +26,7 @@ describe('koa-views', function () {
 
     request(app.listen()).get('/')
       .expect('Content-Type', /html/)
-      .expect(/<p>basic:html<\/p>/)
+      .expect(/basic:html/)
       .expect(200, done)
   })
 
@@ -39,7 +39,7 @@ describe('koa-views', function () {
 
     request(app.listen()).get('/')
       .expect('Content-Type', /html/)
-      .expect(/<p>basic:jade<\/p>/)
+      .expect(/basic:jade/)
       .expect(200, done)
   })
 
@@ -48,12 +48,12 @@ describe('koa-views', function () {
     .use(views({ default: 'jade' }))
     .use(function *() {
       this.locals.engine = 'jade'
-      yield this.render('./fixtures/locals')
+      yield this.render('./fixtures/global-locals')
     })
 
     request(app.listen()).get('/')
       .expect('Content-Type', /html/)
-      .expect(/<p>basic:jade<\/p>/)
+      .expect(/basic:jade/)
       .expect(200, done)
   })
 
@@ -67,9 +67,26 @@ describe('koa-views', function () {
 
     request(app.listen()).get('/')
       .expect('Content-Type', /html/)
-      .expect(/<p>basic:underscore<\/p>/)
+      .expect(/basic:underscore/)
       .expect(200, done)
   })
-  
+
+  it('merge global and local locals ', function (done) {
+    var app = koa()
+    .use(views({ default: 'jade' }))
+    .use(function *() {
+      this.locals.engine = 'jade'
+
+      yield this.render('./fixtures/locals', {
+        type: 'basic'
+      })
+    })
+
+    request(app.listen()).get('/')
+      .expect('Content-Type', /html/)
+      .expect(/basic:jade/)
+      .expect(200, done)
+  })
+
   // TODO: #23
 })
