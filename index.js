@@ -13,8 +13,7 @@ var cons = require('co-views');
 var send = require('koa-send');
 
 /**
- * Add `render` method and define `locals` getter and
- * setters.
+ * Add `render` method
  *
  * @param {String} path (optional)
  * @param {Object} opts (optional)
@@ -22,7 +21,7 @@ var send = require('koa-send');
  */
 
 module.exports = function (path, opts) {
-  var base = dirname(module.parent.filename)
+  var base = dirname(module.parent.filename);
 
   // set path relative to the directory the function was called + path
   if (!path || typeof path == 'object') {
@@ -44,7 +43,7 @@ module.exports = function (path, opts) {
   }
 
   return function *views (next) {
-    if (this.locals && this.render) return;
+    if (this.render) return;
 
     /**
      * App-specific `locals`, but honor upstream
@@ -63,10 +62,12 @@ module.exports = function (path, opts) {
      */
 
     this.render = function *(view, locals) {
-      if (!locals) locals = {};
-      locals = merge(locals, this.locals);
       var ext = opts.default;
       var file = fmt('%s.%s', view, ext);
+
+      locals = locals || {};
+      locals = merge(locals, this.locals);
+
       debug(fmt('render `%s` with %j', file, locals));
 
       if (ext == 'html' && !opts.map) {
