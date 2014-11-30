@@ -6,8 +6,8 @@
 var debug = require('debug')('koa-views');
 var resolve = require('path').resolve;
 var dirname = require('path').dirname;
+var assign = require('object-assign');
 var fmt = require('util').format;
-var merge = require('deepmerge');
 var join = require('path').join;
 var cons = require('co-views');
 var send = require('koa-send');
@@ -66,7 +66,7 @@ module.exports = function (path, opts) {
       var file = fmt('%s.%s', view, ext);
 
       locals = locals || {};
-      locals = merge(locals, this.locals);
+      locals = assign(locals, this.locals);
 
       debug(fmt('render `%s` with %j', file, locals));
 
