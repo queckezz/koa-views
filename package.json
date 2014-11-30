@@ -1,7 +1,7 @@
 {
   "name": "koa-views",
   "version": "2.1.0",
-  "description": "Render views with almost any templating engine",
+  "description": "Template rendering middleware for koa, supporting many template engines",
   "main": "index.js",
   "dependencies": {
     "co-views": "~0.2.0",

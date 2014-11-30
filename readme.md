@@ -1,6 +1,6 @@
 # koa-views
 
-Render views with almost any templating engine.
+Template rendering middleware for koa, supporting [many](https://github.com/tj/consolidate.js#supported-template-engines) template engines.
 
 ## Installation
 
