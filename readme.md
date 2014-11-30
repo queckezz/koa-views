@@ -41,7 +41,7 @@ app.use(function* (next) {
 });
 ```
 
-For full examples take a look at the [./examples](./examples) folder.
+For more examples take a look at the [tests](./test/index.js)
 
 ## API
 
