@@ -45,8 +45,10 @@ For more examples take a look at the [tests](./test/index.js)
 
 ## Debug
 
+Set the `DEBUG` environment variable to `koa-views` when starting your server.
+
 ```bash
-$ DEBUG=koa-views node --harmony-generators server.js
+$ DEBUG=koa-views
 ```
 
 ## License
