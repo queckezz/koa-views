@@ -1,5 +1,9 @@
 # koa-views
 
+[![NPM version][npm-image]][npm-url]
+[![Dependency Status][david-image]][david-url]
+[![License][license-image]][license-url]
+
 Template rendering middleware for koa, supporting [many](https://github.com/tj/consolidate.js#supported-template-engines) template engines.
 
 ## Installation
@@ -48,3 +52,10 @@ $ DEBUG=koa-views node --harmony-generators server.js
 ## License
 
 [MIT](./license)
+
+[npm-image]: https://img.shields.io/npm/v/koa-views.svg?style=flat-square
+[npm-url]: https://npmjs.org/package/koa-views
+[david-image]: http://img.shields.io/david/queckezz/koa-views.svg?style=flat-square
+[david-url]: https://david-dm.org/queckezz/koa-views
+[license-image]: http://img.shields.io/npm/l/koa-views.svg?style=flat-square
+[license-url]: ./license
