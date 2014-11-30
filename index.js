@@ -31,16 +31,12 @@ module.exports = function (path, opts) {
     path = resolve(base, path);
   }
 
-  if (!opts) opts = {};
+  opts = opts || {};
 
   // default extension to `html`
   if (!opts.default) opts.default = 'html';
 
-  for (var prop in opts) {
-    var opt = opts[prop];
-    if (opt == opts.map) opt = JSON.stringify(opt);
-    debug(fmt('set `%s` to `%s`', prop, opt));
-  }
+  if (opts) debug(fmt('options: %s', opts));
 
   return function *views (next) {
     if (this.render) return;
