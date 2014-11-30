@@ -47,4 +47,4 @@ $ DEBUG=koa-views node --harmony-generators server.js
 
 ## Licence
 
-MIT
+[MIT](./licence)
