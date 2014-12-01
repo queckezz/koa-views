@@ -59,6 +59,9 @@ module.exports = function (path, opts) {
 
     this.render = function *(view, locals) {
       var ext = opts.default;
+      if(view[view.length - 1] === '/'){
+        view += 'index';
+      }      
       var file = fmt('%s.%s', view, ext);
 
       locals = locals || {};
