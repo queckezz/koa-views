@@ -4,6 +4,7 @@
   "description": "Template rendering middleware for koa, supporting many template engines",
   "main": "index.js",
   "dependencies": {
+    "app-root-path": "^1.0.0",
     "co-views": "~0.2.0",
     "debug": "~0.7.4",
     "koa-send": "^1.2.4",
