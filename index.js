@@ -11,6 +11,7 @@ var fmt = require('util').format;
 var join = require('path').join;
 var cons = require('co-views');
 var send = require('koa-send');
+var base = require('app-root-path').toString();
 
 /**
  * Add `render` method
@@ -21,7 +22,6 @@ var send = require('koa-send');
  */
 
 module.exports = function (path, opts) {
-  var base = dirname(module.parent.filename);
 
   // set path relative to the directory the function was called + path
   if (!path || typeof path == 'object') {
