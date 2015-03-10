@@ -1,4 +1,16 @@
 
+## 3.0.0
+
+* _Breaking_: `this.locals` is now `this.state`
+
+# 2.1.2
+
+* support default to ./index.[ext]
+
+# 2.0.3
+
+* Resolves circular dependencies in `this.locals`
+
 ## 2.0.0 / 4.28.2014
 
 * default extension to .html
