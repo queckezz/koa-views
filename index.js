@@ -36,10 +36,12 @@ module.exports = function (path, opts) {
   // default extension to `html`
   if (!opts.default) opts.default = 'html';
 
-  if (opts) debug(fmt('options: %s', opts));
+  debug(fmt('options: %s', opts));
 
   return function *views (next) {
     if (this.render) return;
+
+    var render = cons(path, opts);
 
     /**
      * App-specific `locals`, but honor upstream
@@ -61,7 +63,7 @@ module.exports = function (path, opts) {
       var ext = opts.default;
       if(view[view.length - 1] === '/'){
         view += 'index';
-      }      
+      }
       var file = fmt('%s.%s', view, ext);
 
       locals = locals || {};
@@ -72,7 +74,6 @@ module.exports = function (path, opts) {
       if (ext == 'html' && !opts.map) {
         yield send(this, join(path, file));
       } else {
-        var render = cons(path, opts);
         this.body = yield render(view, locals);
       }
 
