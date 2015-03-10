@@ -4,7 +4,9 @@
 [![Dependency Status][david-image]][david-url]
 [![License][license-image]][license-url]
 
-Template rendering middleware for koa, supporting [many](https://github.com/tj/consolidate.js#supported-template-engines) template engines.
+Template rendering middleware for koa.
+
+[Supported template engines](https://github.com/tj/consolidate.js#supported-template-engines)
 
 ## Installation
 

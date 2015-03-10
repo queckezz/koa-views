@@ -1,7 +1,7 @@
 {
   "name": "koa-views",
   "version": "2.1.2",
-  "description": "Template rendering middleware for koa, supporting many template engines",
+  "description": "Template rendering middleware for koa",
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha --reporter dot --harmony"
