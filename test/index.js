@@ -43,12 +43,12 @@ describe('koa-views', function () {
       .expect(200, done)
   })
 
-  it('set and render locals', function (done) {
+  it('set and render state', function (done) {
     var app = koa()
     .use(views({ default: 'jade' }))
     .use(function *() {
-      this.locals.engine = 'jade'
-      yield this.render('./fixtures/global-locals')
+      this.state.engine = 'jade'
+      yield this.render('./fixtures/global-state')
     })
 
     request(app.listen()).get('/')
@@ -58,20 +58,20 @@ describe('koa-views', function () {
   })
 
   // #25
-  it('works with circular references in locals', function (done) {
+  it('works with circular references in state', function (done) {
     var app = koa()
     .use(views({ default: 'jade' }))
     .use(function *() {
-      this.locals = {
+      this.state = {
         a: {},
         app: app
       }
 
-      this.locals.a.a = this.locals.a
+      this.state.a.a = this.state.a
 
-      yield this.render('./fixtures/global-locals', {
+      yield this.render('./fixtures/global-state', {
         app: app,
-        b: this.locals,
+        b: this.state,
         engine: 'jade'
       })
     })
@@ -86,7 +86,7 @@ describe('koa-views', function () {
     var app = koa()
     .use(views({ map: {html: 'underscore'} }))
     .use(function *() {
-      this.locals.engine = 'underscore'
+      this.state.engine = 'underscore'
       yield this.render('./fixtures/underscore')
     })
 
@@ -96,13 +96,13 @@ describe('koa-views', function () {
       .expect(200, done)
   })
 
-  it('merge global and local locals ', function (done) {
+  it('merges global and local state ', function (done) {
     var app = koa()
     .use(views({ default: 'jade' }))
     .use(function *() {
-      this.locals.engine = 'jade'
+      this.state.engine = 'jade'
 
-      yield this.render('./fixtures/locals', {
+      yield this.render('./fixtures/state', {
         type: 'basic'
       })
     })
