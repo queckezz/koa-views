@@ -13,7 +13,7 @@ var cons = require('co-views');
 var send = require('koa-send');
 
 /**
- * Add `render` method
+ * Add `render` method.
  *
  * @param {String} path (optional)
  * @param {Object} opts (optional)
@@ -40,18 +40,11 @@ module.exports = function (path, opts) {
 
   return function *views (next) {
     if (this.render) return;
-
     var render = cons(path, opts);
+    this.state = this.state || {}
 
     /**
-     * App-specific `locals`, but honor upstream
-     * middlewares that may have already set this.locals.
-     */
-
-    this.locals = this.locals || {};
-
-    /**
-     * Render `view` with `locals`.
+     * Render `view` with `locals` and `koa.ctx.state`.
      *
      * @param {String} view
      * @param {Object} locals
@@ -61,20 +54,21 @@ module.exports = function (path, opts) {
 
     this.render = function *(view, locals) {
       var ext = opts.default;
+      
       if(view[view.length - 1] === '/'){
         view += 'index';
       }
       var file = fmt('%s.%s', view, ext);
 
       locals = locals || {};
-      locals = assign(locals, this.locals);
+      var state = assign(locals, this.state);
 
-      debug(fmt('render `%s` with %j', file, locals));
+      debug(fmt('render `%s` with %j', file, state));
 
       if (ext == 'html' && !opts.map) {
         yield send(this, join(path, file));
       } else {
-        this.body = yield render(view, locals);
+        this.body = yield render(view, state);
       }
 
       this.type = 'text/html';
