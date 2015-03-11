@@ -39,7 +39,7 @@ module.exports = function (path, opts) {
   debug(fmt('options: %s', opts));
 
   return function *views (next) {
-    if (this.render) return;
+    if (this.render) yield next;
     var render = cons(path, opts);
     this.state = this.state || {}
 
@@ -54,7 +54,7 @@ module.exports = function (path, opts) {
 
     this.render = function *(view, locals) {
       var ext = opts.default;
-      
+
       if(view[view.length - 1] === '/'){
         view += 'index';
       }
