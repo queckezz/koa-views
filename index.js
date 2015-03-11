@@ -39,7 +39,7 @@ module.exports = function (path, opts) {
   debug(fmt('options: %s', opts));
 
   return function *views (next) {
-    if (this.render) yield next;
+    if (this.render) return yield next;
     var render = cons(path, opts);
     this.state = this.state || {}
 

@@ -2,6 +2,7 @@
 ## 3.0.0
 
 * _Breaking_: `this.locals` is now `this.state`
+* return and yield next if this.render already exists
 
 # 2.1.2
 
