@@ -113,5 +113,21 @@ describe('koa-views', function () {
       .expect(200, done)
   })
 
+  it('yields to the next middleware if this.render is already defined', function (done) {
+    var app = koa()
+    .use(function *(next) {
+      this.render = true
+      yield next
+    })
+    .use(views())
+    .use(function *() {
+      this.body = 'hello'
+    })
+
+    request(app.listen()).get('/')
+      .expect('hello')
+      .expect(200, done)
+  })
+
   // TODO: #23
 })
