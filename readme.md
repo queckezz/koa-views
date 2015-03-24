@@ -25,7 +25,7 @@ app.use(views('views', {
 }));
 
 app.use(function* (next) {
-  this.locals = {
+  this.state = {
     session: this.session,
     title: 'app'
   };
