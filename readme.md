@@ -40,10 +40,11 @@ For more examples take a look at the [tests](./test/index.js)
 
 ## API
 
-#### `views([path, opts])`
+#### `views([root, opts])`
 
-* `path (__dirname)`: __dirname + where your views are located
-* `opts`: these options go straight to [co-views](https://github.com/visionmedia/co-views).
+* `root (__dirname)`: __dirname + where your views are located
+* `opts`: these options go straight to [co-views](https://github.com/tj/co-views).
+  - root: view root directory
 
 ## Debug
 

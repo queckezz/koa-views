@@ -1,3 +1,4 @@
+'use strict';
 
 /**
  * Module dependencies.
@@ -24,24 +25,26 @@ module.exports = function (path, opts) {
   var base = dirname(module.parent.filename);
 
   // set path relative to the directory the function was called + path
-  if (!path || typeof path == 'object') {
+  if (typeof path == 'object') {
     opts = path;
+    path = opts.root || base;
+  } else if (!path) {
     path = base;
-  } else {
-    path = resolve(base, path);
   }
 
   opts = opts || {};
 
+  path = resolve(base, path);
+
   // default extension to `html`
   if (!opts.default) opts.default = 'html';
 
-  debug(fmt('options: %s', opts));
+  debug('options: %s', opts);
 
   return function *views (next) {
     if (this.render) return yield next;
     var render = cons(path, opts);
-    this.state = this.state || {}
+    this.state = this.state || {};
 
     /**
      * Render `view` with `locals` and `koa.ctx.state`.
@@ -63,7 +66,7 @@ module.exports = function (path, opts) {
       locals = locals || {};
       var state = assign(locals, this.state);
 
-      debug(fmt('render `%s` with %j', file, state));
+      debug('render `%s` with %j', file, state);
 
       if (ext == 'html' && !opts.map) {
         yield send(this, join(path, file));
