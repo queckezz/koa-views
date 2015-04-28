@@ -43,7 +43,8 @@ For more examples take a look at the [tests](./test/index.js)
 #### `views([path, opts])`
 
 * `path (__dirname)`: __dirname + where your views are located
-* `opts`: these options go straight to [co-views](https://github.com/visionmedia/co-views).
+* `opts`: these options go straight to [co-views](https://github.com/tj/co-views).
+  - root: view root directory
 
 ## Debug
 

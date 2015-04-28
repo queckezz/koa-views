@@ -57,6 +57,23 @@ describe('koa-views', function () {
       .expect(200, done)
   })
 
+  it('set option: root', function (done) {
+    var app = koa()
+    .use(views({
+      root: '../test',
+      default: 'jade'
+    }))
+    .use(function *() {
+      this.state.engine = 'jade'
+      yield this.render('./fixtures/global-state')
+    })
+
+    request(app.listen()).get('/')
+      .expect('Content-Type', /html/)
+      .expect(/basic:jade/)
+      .expect(200, done)
+  })
+
   // #25
   it('works with circular references in state', function (done) {
     var app = koa()
