@@ -36,7 +36,7 @@ module.exports = function (path, opts) {
   // default extension to `html`
   if (!opts.default) opts.default = 'html';
 
-  debug(fmt('options: %s', opts));
+  debug(fmt('options: ', opts));
 
   return function *views (next) {
     if (this.render) return yield next;
