@@ -20,7 +20,7 @@ $ npm install koa-views
 // Must be used before any router is used
 app.use(views('views', {
   map: {
-    html: underscore
+    html: 'underscore'
   }
 }));
 
