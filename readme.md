@@ -17,6 +17,8 @@ $ npm install koa-views
 ## Example
 
 ```js
+var views = require('koa-views');
+
 // Must be used before any router is used
 app.use(views('views', {
   map: {
