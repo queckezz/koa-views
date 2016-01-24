@@ -8,6 +8,7 @@
 const debug = require('debug')('koa-views')
 const defaults = require('@f/defaults')
 const dirname = require('path').dirname
+const extname = require('path').extname
 const fmt = require('util').format
 const join = require('path').join
 const cons = require('co-views')
@@ -84,7 +85,7 @@ function *getPaths (abs, rel, ext) {
 module.exports = (path, opts) => {
   opts = defaults(opts || {}, {
     extension: 'html'
-  })
+  });
 
   debug('options: %j', opts)
 
@@ -103,7 +104,7 @@ module.exports = (path, opts) => {
 
     Object.assign(this, {
       render: function *(relPath, locals) {
-        let ext = opts.extension
+        let ext = (extname(relPath) || '.' + opts.extension).slice(1);
         const paths = yield getPaths(path, relPath, ext)
 
         var state = locals && this.state ? Object.assign(locals, this.state) : {}
