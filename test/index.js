@@ -32,7 +32,7 @@ describe('koa-views', function () {
 
   it('default to [ext] if a default engine is set', function (done) {
     var app = koa()
-    .use(views(__dirname, { default: 'jade' }))
+    .use(views(__dirname, { extension: 'jade' }))
     .use(function *() {
       yield this.render('./fixtures/basic')
     })
@@ -45,7 +45,7 @@ describe('koa-views', function () {
 
   it('set and render state', function (done) {
     var app = koa()
-    .use(views(__dirname, { default: 'jade' }))
+    .use(views(__dirname, { extension: 'jade' }))
     .use(function *() {
       this.state.engine = 'jade'
       yield this.render('./fixtures/global-state')
@@ -60,7 +60,7 @@ describe('koa-views', function () {
   // #25
   it('works with circular references in state', function (done) {
     var app = koa()
-    .use(views(__dirname, { default: 'jade' }))
+    .use(views(__dirname, { extension: 'jade' }))
     .use(function *() {
       this.state = {
         a: {},
@@ -98,7 +98,7 @@ describe('koa-views', function () {
 
   it('merges global and local state ', function (done) {
     var app = koa()
-    .use(views(__dirname, { default: 'jade' }))
+    .use(views(__dirname, { extension: 'jade' }))
     .use(function *() {
       this.state.engine = 'jade'
 

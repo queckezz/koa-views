@@ -86,7 +86,7 @@ function *getPaths (abs, rel, ext) {
 
 module.exports = (path, opts) => {
   opts = defaults(opts || {}, {
-    default: 'html'
+    extension: 'html'
   })
 
   debug('options: %j', opts)
@@ -106,7 +106,7 @@ module.exports = (path, opts) => {
 
     Object.assign(this, {
       render: function *(relPath, locals) {
-        let ext = opts.default
+        let ext = opts.extension
         const paths = yield getPaths(path, relPath, ext)
 
         var state = locals && this.state ? Object.assign(locals, this.state) : {}
