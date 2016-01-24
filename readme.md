@@ -1,5 +1,6 @@
 # koa-views
 
+[![Build status][travis-image]][travis-url]
 [![NPM version][npm-image]][npm-url]
 [![Dependency Status][david-image]][david-url]
 [![License][license-image]][license-url]
@@ -103,6 +104,8 @@ $ DEBUG=koa-views
 
 [MIT](./license)
 
+[travis-image]: https://img.shields.io/travis/queckezz/koa-views.svg?style=flat-square
+[travis-url]: https://travis-ci.org/queckezz/koa-views
 [npm-image]: https://img.shields.io/npm/v/koa-views.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/koa-views
 [david-image]: http://img.shields.io/david/queckezz/koa-views.svg?style=flat-square
