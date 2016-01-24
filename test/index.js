@@ -129,5 +129,29 @@ describe('koa-views', function () {
       .expect(200, done)
   })
 
-  // TODO: #23
+  // #23 && #27
+  it('given a directory it should try to require index.[ext]', function (done) {
+    var app = koa()
+    .use(views(__dirname))
+    .use(function *() {
+      yield this.render('./fixtures')
+    })
+
+    request(app.listen()).get('/')
+      .expect(/defaults-to-index/)
+      .expect(200, done)
+  })
+
+  // #43
+  it('it should not overwrite an extension when given one', function (done) {
+    var app = koa()
+    .use(views(__dirname))
+    .use(function *() {
+      yield this.render('./fixtures/basic.ejs')
+    })
+
+    request(app.listen()).get('/')
+      .expect(/basic:ejs/)
+      .expect(200, done)
+  })
 })

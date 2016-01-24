@@ -4,7 +4,7 @@
   "description": "Template rendering middleware for koa",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha --reporter dot --harmony"
+    "test": "./node_modules/.bin/mocha --reporter dot --harmony --bail"
   },
   "dependencies": {
     "@f/defaults": "^1.0.1",
@@ -13,11 +13,14 @@
     "koa-send": "^3.1.0"
   },
   "devDependencies": {
+    "ejs": "^2.4.1",
     "jade": "^1.9.2",
     "koa": "^0.21.0",
     "mocha": "^2.2.4",
     "should": "^7.0.2",
     "supertest": "^1.0.1",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.4.0",
     "underscore": "^1.8.3"
   },
   "repository": {
