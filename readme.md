@@ -6,21 +6,25 @@
 
 Template rendering middleware for koa.
 
-[Supported template engines](https://github.com/tj/consolidate.js#supported-template-engines)
-
 ## Installation
 
 ```
 $ npm install koa-views
 ```
 
-## Example
+## Templating engines
+
+As of right now, `koa-views` is using [consolidate](https://github.com/tj/consolidate.js) under the hood.
+
+[List of supported engines](https://github.com/tj/consolidate.js#supported-template-engines)
+
+## Example (koa 1.x)
 
 ```js
 var views = require('koa-views');
 
 // Must be used before any router is used
-app.use(views('views', {
+app.use(views(__dirname + '/views', {
   map: {
     html: 'underscore'
   }
@@ -38,15 +42,54 @@ app.use(function* (next) {
 });
 ```
 
+## Example (koa 2.x)
+
+This module won't get converted to koa 2 until v8 lands `async-await`. If you want to use koa 2 you need to wrap this module with [koa-convert](https://github.com/koajs/convert) and build your code with [babel 6](https://babeljs.io/). View this [issue](https://github.com/queckezz/koa-views/issues/41) if you run into problems.
+
+```js
+app.use(convert(views(__dirname, {
+  map: {
+    html: 'nunjucks'
+  }
+})))
+
+app.use(async (ctx, next) => {
+  ctx.render = co.wrap(ctx.render)
+  await next()
+})
+
+app.use(async (ctx, next) => {
+  yield this.render('./views/user.html')
+})
+```
+
 For more examples take a look at the [tests](./test/index.js)
 
 ## API
 
-#### `views([root, opts])`
+#### `views(root, opts)`
 
-* `root (__dirname)`: __dirname + where your views are located
-* `opts`: these options go straight to [co-views](https://github.com/tj/co-views).
-  - root: view root directory
+* `root`: Where your views are located. All views you `render()` are relative to this path.
+* `opts` (optional)
+* `opts.extension`: default extension for your views
+
+```js
+// instead of this
+yield this.render('user.jade')
+// you can
+yield this.render('user')
+```
+
+* `opts.map`: map extension to an engine
+
+```js
+app.use(views(__dirname, { map: {html: 'nunjucks' }}))
+
+// render `user.html` with nunjucks
+app.use(function *() {
+  yield this.render('user.html')
+})
+```
 
 ## Debug
 

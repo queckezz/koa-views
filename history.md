@@ -1,4 +1,45 @@
 
+## 4.0.0
+
+### Breaking changes
+
+* no root option -> use views(path, ...)
+* `path` should now always be absolute (no magic anymore)
+
+```js
+// don't
+app.use(views('./views'))
+
+// do
+app.use(views(__dirname + '/views'))
+```
+
+* `opts` is now always an object, no string can be passed in as engine
+
+```js
+// this
+app.use(views(__dirname + '/views', 'jade'))
+// is now this
+app.use(views(__dirname + '/views', {
+  extension: 'jade'
+}))
+```
+* `opts.default` renamed to `opts.extension` to avoid misconceptions
+
+### Non-breaking changes
+
+* more robust file require
+
+
+```js
+// all valid (when opts.extension) set
+fixtures/index.ejs
+./fixtures/index.ejs
+./fixtures/index
+./fixtures/
+./fixtures
+```
+
 ## 3.0.0
 
 * _Breaking_: `this.locals` is now `this.state`
