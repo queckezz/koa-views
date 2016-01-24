@@ -1,3 +1,4 @@
+
 'use strict'
 
 /**
@@ -5,10 +6,8 @@
 */
 
 const debug = require('debug')('koa-views')
-const basename = require('path').basename
 const defaults = require('@f/defaults')
 const dirname = require('path').dirname
-const extname = require('path').extname
 const fmt = require('util').format
 const join = require('path').join
 const cons = require('co-views')
@@ -50,10 +49,8 @@ const stat = path => {
  */
 
 function *getPaths (abs, rel, ext) {
-  let fullPath = join(abs, rel)
-
   try {
-    const stats = yield stat(fullPath)
+    const stats = yield stat(join(abs, rel))
     if (stats.isDirectory()) {
       // a directory
       return {
@@ -110,7 +107,7 @@ module.exports = (path, opts) => {
         const paths = yield getPaths(path, relPath, ext)
 
         var state = locals && this.state ? Object.assign(locals, this.state) : {}
-        debug('render `%s` with %j', paths.abs, state)
+        debug('render `%s` with %j', paths.rel, state)
         this.type = 'text/html'
 
         if (isHtml(ext) && !opts.map) {
@@ -120,7 +117,6 @@ module.exports = (path, opts) => {
         } else {
           this.body = yield render(paths.rel, state)
         }
-
       }
     })
 
