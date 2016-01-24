@@ -72,7 +72,7 @@ For more examples take a look at the [tests](./test/index.js)
 
 * `root`: Where your views are located. All views you `render()` are relative to this path.
 * `opts` (optional)
-* `opts.extension`: default extension for your views
+* `opts.extension`: Default extension for your views
 
 ```js
 // instead of this

@@ -3,7 +3,7 @@
 
 ### Breaking changes
 
-* no root option -> use views(path, ...)
+* no root option -> use `views(path, ...)`
 * `path` should now always be absolute (no magic anymore)
 
 ```js
@@ -33,11 +33,12 @@ app.use(views(__dirname + '/views', {
 
 ```js
 // all valid (when opts.extension) set
-fixtures/index.ejs
+./fixtures/index.ejs
 ./fixtures/index.ejs
 ./fixtures/index
 ./fixtures/
 ./fixtures
+fixtures
 ```
 
 ## 3.0.0
