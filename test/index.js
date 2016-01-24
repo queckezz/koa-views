@@ -19,7 +19,7 @@ describe('koa-views', function () {
 
   it('default to html', function (done) {
     var app = koa()
-    .use(views())
+    .use(views(__dirname))
     .use(function *() {
       yield this.render('./fixtures/basic')
     })
@@ -32,7 +32,7 @@ describe('koa-views', function () {
 
   it('default to [ext] if a default engine is set', function (done) {
     var app = koa()
-    .use(views({ default: 'jade' }))
+    .use(views(__dirname, { default: 'jade' }))
     .use(function *() {
       yield this.render('./fixtures/basic')
     })
@@ -45,24 +45,7 @@ describe('koa-views', function () {
 
   it('set and render state', function (done) {
     var app = koa()
-    .use(views({ default: 'jade' }))
-    .use(function *() {
-      this.state.engine = 'jade'
-      yield this.render('./fixtures/global-state')
-    })
-
-    request(app.listen()).get('/')
-      .expect('Content-Type', /html/)
-      .expect(/basic:jade/)
-      .expect(200, done)
-  })
-
-  it('set option: root', function (done) {
-    var app = koa()
-    .use(views({
-      root: '../test',
-      default: 'jade'
-    }))
+    .use(views(__dirname, { default: 'jade' }))
     .use(function *() {
       this.state.engine = 'jade'
       yield this.render('./fixtures/global-state')
@@ -77,7 +60,7 @@ describe('koa-views', function () {
   // #25
   it('works with circular references in state', function (done) {
     var app = koa()
-    .use(views({ default: 'jade' }))
+    .use(views(__dirname, { default: 'jade' }))
     .use(function *() {
       this.state = {
         a: {},
@@ -101,7 +84,7 @@ describe('koa-views', function () {
 
   it('`map` given `engine` to given file `ext`', function (done) {
     var app = koa()
-    .use(views({ map: {html: 'underscore'} }))
+    .use(views(__dirname, { map: {html: 'underscore'} }))
     .use(function *() {
       this.state.engine = 'underscore'
       yield this.render('./fixtures/underscore')
@@ -115,7 +98,7 @@ describe('koa-views', function () {
 
   it('merges global and local state ', function (done) {
     var app = koa()
-    .use(views({ default: 'jade' }))
+    .use(views(__dirname, { default: 'jade' }))
     .use(function *() {
       this.state.engine = 'jade'
 
