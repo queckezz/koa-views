@@ -1,4 +1,8 @@
 
+## 4.0.1
+
+* [Bugfix] Select correct extension in order to decide if the view should be sent or rendered
+
 ## 4.0.0
 
 ### Breaking changes
