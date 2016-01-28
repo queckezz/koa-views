@@ -104,10 +104,14 @@ module.exports = (path, opts) => {
 
     Object.assign(this, {
       render: function *(relPath, locals) {
+        if(locals == null) {
+          locals = {};
+        }
+        
         let ext = (extname(relPath) || '.' + opts.extension).slice(1);
         const paths = yield getPaths(path, relPath, ext)
 
-        var state = locals && this.state ? Object.assign(locals, this.state) : {}
+        var state = this.state ? Object.assign(locals, this.state) : {}
         debug('render `%s` with %j', paths.rel, state)
         this.type = 'text/html'
 
