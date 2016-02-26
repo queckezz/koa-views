@@ -60,7 +60,7 @@ app.use(async (ctx, next) => {
 })
 
 app.use(async (ctx, next) => {
-  yield this.render('./views/user.html')
+  await this.render('./views/user.html')
 })
 ```
 
