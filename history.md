@@ -1,4 +1,8 @@
 
+## 4.1.0
+
+* [BugFix] state will pass now if no locals are passed
+
 ## 4.0.1
 
 * [Bugfix] Select correct extension in order to decide if the view should be sent or rendered
