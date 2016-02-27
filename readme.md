@@ -55,12 +55,12 @@ app.use(convert(views(__dirname, {
 })))
 
 app.use(async (ctx, next) => {
-  ctx.render = co.wrap(ctx.render)
+  ctx.render = co.wrap(ctx.render.bind(ctx))
   await next()
 })
 
 app.use(async (ctx, next) => {
-  await this.render('./views/user.html')
+  await ctx.render('./views/user.html')
 })
 ```
 
