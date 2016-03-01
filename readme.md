@@ -10,7 +10,7 @@ Template rendering middleware for koa.
 ## Installation
 
 ```
-$ npm install koa-views
+$ npm install koa-views@next
 ```
 
 ## Templating engines
@@ -19,7 +19,7 @@ As of right now, `koa-views` is using [consolidate](https://github.com/tj/consol
 
 [List of supported engines](https://github.com/tj/consolidate.js#supported-template-engines)
 
-## Example (koa 1.x)
+## Example (koa 2.x)
 
 ```js
 var views = require('koa-views');
@@ -31,37 +31,16 @@ app.use(views(__dirname + '/views', {
   }
 }));
 
-app.use(function* (next) {
-  this.state = {
+app.use(async function (ctx, next) {
+  ctx.state = {
     session: this.session,
     title: 'app'
   };
 
-  yield this.render('user', {
+  await ctx.render('user', {
     user: 'John'
   });
 });
-```
-
-## Example (koa 2.x)
-
-This module won't get converted to koa 2 until v8 lands `async-await`. If you want to use koa 2 you need to wrap this module with [koa-convert](https://github.com/koajs/convert) and build your code with [babel 6](https://babeljs.io/). View this [issue](https://github.com/queckezz/koa-views/issues/41) if you run into problems.
-
-```js
-app.use(convert(views(__dirname, {
-  map: {
-    html: 'nunjucks'
-  }
-})))
-
-app.use(async (ctx, next) => {
-  ctx.render = co.wrap(ctx.render.bind(ctx))
-  await next()
-})
-
-app.use(async (ctx, next) => {
-  await ctx.render('./views/user.html')
-})
 ```
 
 For more examples take a look at the [tests](./test/index.js)
@@ -87,8 +66,8 @@ yield this.render('user')
 app.use(views(__dirname, { map: {html: 'nunjucks' }}))
 
 // render `user.html` with nunjucks
-app.use(function *() {
-  yield this.render('user.html')
+app.use(async function (ctx) {
+  await ctx.render('user.html')
 })
 ```
 
