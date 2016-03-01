@@ -9,7 +9,6 @@ const debug = require('debug')('koa-views')
 const defaults = require('@f/defaults')
 const dirname = require('path').dirname
 const extname = require('path').extname
-const fmt = require('util').format
 const join = require('path').join
 const resolve = require('path').resolve
 const send = require('koa-send')
@@ -21,7 +20,7 @@ const consolidate = require('consolidate')
 * @return {Boolean}
 */
 
-const isHtml = ext => ext == 'html'
+const isHtml = (ext) => ext === 'html'
 
 /**
  * File formatter.
@@ -33,11 +32,11 @@ const toFile = (fileName, ext) => `${fileName}.${ext}`
  * `fs.stat` promisfied.
  */
 
-const stat = path => {
-  return new Promise((res, rej) => {
+const stat = (path) => {
+  return new Promise((resolve, reject) => {
     _stat(path, (err, stats) => {
-      if (err) rej(err)
-      res(stats)
+      if (err) reject(err)
+      resolve(stats)
     })
   })
 }
@@ -51,7 +50,7 @@ const stat = path => {
  */
 
 function getPaths(abs, rel, ext) {
-  return stat(join(abs, rel)).then(stats => {
+  return stat(join(abs, rel)).then((stats) => {
     if (stats.isDirectory()) {
       // a directory
       return {
@@ -66,7 +65,7 @@ function getPaths(abs, rel, ext) {
       abs
     }
   })
-  .catch(e => {
+  .catch((e) => {
     // not a valid file/directory
     if (!extname(rel)) {
       // Template file has been provided without extension
@@ -74,7 +73,7 @@ function getPaths(abs, rel, ext) {
       return getPaths(abs, `${rel}.${ext}`, ext)
     }
 
-    throw e;
+    throw e
   })
 }
 
@@ -88,7 +87,7 @@ function getPaths(abs, rel, ext) {
 module.exports = (path, opts) => {
   opts = defaults(opts || {}, {
     extension: 'html'
-  });
+  })
 
   debug('options: %j', opts)
 
@@ -104,15 +103,15 @@ module.exports = (path, opts) => {
      * @api public
      */
     ctx.render = function (relPath, locals) {
-      if(locals == null) {
-        locals = {};
+      if (locals == null) {
+        locals = {}
       }
 
-      let ext = (extname(relPath) || '.' + opts.extension).slice(1);
+      let ext = (extname(relPath) || '.' + opts.extension).slice(1)
 
       return getPaths(path, relPath, ext)
-      .then(paths => {
-        var state = ctx.state ? Object.assign(locals, ctx.state) : locals
+      .then((paths) => {
+        const state = ctx.state ? Object.assign(locals, ctx.state) : locals
         debug('render `%s` with %j', paths.rel, state)
         ctx.type = 'text/html'
 
@@ -135,9 +134,8 @@ module.exports = (path, opts) => {
             return Promise.reject(new Error(`Engine not found for file ".${ext}" file extension`))
           }
 
-          debugger
           return consolidate[engineName](resolve(paths.abs, paths.rel), state)
-          .then(html => {
+          .then((html) => {
             ctx.body = html
           })
         }

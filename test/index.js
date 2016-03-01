@@ -1,12 +1,12 @@
 
-var request = require('supertest')
-var views = require('../')
-var should = require('should')
-var Koa = require('koa')
+const request = require('supertest')
+const views = require('../')
+const Koa = require('koa')
+require('should')
 
 describe('koa-views', function () {
   it('have a render method', function (done) {
-    var app = new Koa()
+    const app = new Koa()
     .use(views())
     .use(function (ctx) {
       ctx.render.should.ok
@@ -18,7 +18,7 @@ describe('koa-views', function () {
   })
 
   it('default to html', function (done) {
-    var app = new Koa()
+    const app = new Koa()
     .use(views(__dirname))
     .use(function (ctx) {
       return ctx.render('./fixtures/basic')
@@ -31,7 +31,7 @@ describe('koa-views', function () {
   })
 
   it('default to [ext] if a default engine is set', function (done) {
-    var app = new Koa()
+    const app = new Koa()
     .use(views(__dirname, { extension: 'jade' }))
     .use(function (ctx) {
       return ctx.render('./fixtures/basic')
@@ -44,7 +44,7 @@ describe('koa-views', function () {
   })
 
   it('set and render state', function (done) {
-    var app = new Koa()
+    const app = new Koa()
     .use(views(__dirname, { extension: 'jade' }))
     .use(function (ctx) {
       ctx.state.engine = 'jade'
@@ -59,7 +59,7 @@ describe('koa-views', function () {
 
   // #25
   it('works with circular references in state', function (done) {
-    var app = new Koa()
+    const app = new Koa()
     .use(views(__dirname, { extension: 'jade' }))
     .use(function (ctx) {
       ctx.state = {
@@ -83,7 +83,7 @@ describe('koa-views', function () {
   })
 
   it('`map` given `engine` to given file `ext`', function (done) {
-    var app = new Koa()
+    const app = new Koa()
     .use(views(__dirname, { map: {html: 'underscore'} }))
     .use(function (ctx) {
       ctx.state.engine = 'underscore'
@@ -97,7 +97,7 @@ describe('koa-views', function () {
   })
 
   it('merges global and local state ', function (done) {
-    var app = new Koa()
+    const app = new Koa()
     .use(views(__dirname, { extension: 'jade' }))
     .use(function (ctx) {
       ctx.state.engine = 'jade'
@@ -114,7 +114,7 @@ describe('koa-views', function () {
   })
 
   it('call to the next middleware if this.render is already defined', function (done) {
-    var app = new Koa()
+    const app = new Koa()
     .use(function (ctx, next) {
       ctx.render = true
       return next()
@@ -131,7 +131,7 @@ describe('koa-views', function () {
 
   // #23 && #27
   it('given a directory it should try to require index.[ext]', function (done) {
-    var app = new Koa()
+    const app = new Koa()
     .use(views(__dirname))
     .use(function (ctx) {
       return ctx.render('./fixtures')
@@ -144,7 +144,7 @@ describe('koa-views', function () {
 
   // #43
   it('it should not overwrite an extension when given one', function (done) {
-    var app = new Koa()
+    const app = new Koa()
     .use(views(__dirname))
     .use(function (ctx) {
       return ctx.render('./fixtures/basic.ejs')
