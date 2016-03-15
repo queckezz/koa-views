@@ -7,6 +7,8 @@
 
 Template rendering middleware for koa.
 
+> **Note:** This master branch is for koa's upcoming version `koa@2`. Take a look at the `v1.x` branch for `koa@1`.
+
 ## Installation
 
 ```
@@ -19,7 +21,7 @@ As of right now, `koa-views` is using [consolidate](https://github.com/tj/consol
 
 [List of supported engines](https://github.com/tj/consolidate.js#supported-template-engines)
 
-## Example (koa 2.x)
+## Example
 
 ```js
 var views = require('koa-views');
