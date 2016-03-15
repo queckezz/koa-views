@@ -1,16 +1,16 @@
 
-var request = require('supertest')
-var views = require('../')
-var should = require('should')
-var koa = require('koa')
+const request = require('supertest')
+const views = require('../')
+const Koa = require('koa')
+require('should')
 
 describe('koa-views', function () {
   it('have a render method', function (done) {
-    var app = koa()
+    const app = new Koa()
     .use(views())
-    .use(function *() {
-      this.render.should.ok
-      this.render.should.Function
+    .use(function (ctx) {
+      ctx.render.should.ok
+      ctx.render.should.Function
     })
 
     request(app.listen()).get('/')
@@ -18,10 +18,10 @@ describe('koa-views', function () {
   })
 
   it('default to html', function (done) {
-    var app = koa()
+    const app = new Koa()
     .use(views(__dirname))
-    .use(function *() {
-      yield this.render('./fixtures/basic')
+    .use(function (ctx) {
+      return ctx.render('./fixtures/basic')
     })
 
     request(app.listen()).get('/')
@@ -31,10 +31,10 @@ describe('koa-views', function () {
   })
 
   it('default to [ext] if a default engine is set', function (done) {
-    var app = koa()
+    const app = new Koa()
     .use(views(__dirname, { extension: 'jade' }))
-    .use(function *() {
-      yield this.render('./fixtures/basic')
+    .use(function (ctx) {
+      return ctx.render('./fixtures/basic')
     })
 
     request(app.listen()).get('/')
@@ -44,11 +44,11 @@ describe('koa-views', function () {
   })
 
   it('set and render state', function (done) {
-    var app = koa()
+    const app = new Koa()
     .use(views(__dirname, { extension: 'jade' }))
-    .use(function *() {
-      this.state.engine = 'jade'
-      yield this.render('./fixtures/global-state')
+    .use(function (ctx) {
+      ctx.state.engine = 'jade'
+      return ctx.render('./fixtures/global-state')
     })
 
     request(app.listen()).get('/')
@@ -59,17 +59,17 @@ describe('koa-views', function () {
 
   // #25
   it('works with circular references in state', function (done) {
-    var app = koa()
+    const app = new Koa()
     .use(views(__dirname, { extension: 'jade' }))
-    .use(function *() {
-      this.state = {
+    .use(function (ctx) {
+      ctx.state = {
         a: {},
         app: app
       }
 
-      this.state.a.a = this.state.a
+      ctx.state.a.a = ctx.state.a
 
-      yield this.render('./fixtures/global-state', {
+      return ctx.render('./fixtures/global-state', {
         app: app,
         b: this.state,
         engine: 'jade'
@@ -83,11 +83,11 @@ describe('koa-views', function () {
   })
 
   it('`map` given `engine` to given file `ext`', function (done) {
-    var app = koa()
+    const app = new Koa()
     .use(views(__dirname, { map: {html: 'underscore'} }))
-    .use(function *() {
-      this.state.engine = 'underscore'
-      yield this.render('./fixtures/underscore')
+    .use(function (ctx) {
+      ctx.state.engine = 'underscore'
+      return ctx.render('./fixtures/underscore')
     })
 
     request(app.listen()).get('/')
@@ -97,12 +97,12 @@ describe('koa-views', function () {
   })
 
   it('merges global and local state ', function (done) {
-    var app = koa()
+    const app = new Koa()
     .use(views(__dirname, { extension: 'jade' }))
-    .use(function *() {
-      this.state.engine = 'jade'
+    .use(function (ctx) {
+      ctx.state.engine = 'jade'
 
-      yield this.render('./fixtures/state', {
+      return ctx.render('./fixtures/state', {
         type: 'basic'
       })
     })
@@ -113,15 +113,15 @@ describe('koa-views', function () {
       .expect(200, done)
   })
 
-  it('yields to the next middleware if this.render is already defined', function (done) {
-    var app = koa()
-    .use(function *(next) {
-      this.render = true
-      yield next
+  it('call to the next middleware if this.render is already defined', function (done) {
+    const app = new Koa()
+    .use(function (ctx, next) {
+      ctx.render = true
+      return next()
     })
     .use(views())
-    .use(function *() {
-      this.body = 'hello'
+    .use(function (ctx) {
+      ctx.body = 'hello'
     })
 
     request(app.listen()).get('/')
@@ -131,10 +131,10 @@ describe('koa-views', function () {
 
   // #23 && #27
   it('given a directory it should try to require index.[ext]', function (done) {
-    var app = koa()
+    const app = new Koa()
     .use(views(__dirname))
-    .use(function *() {
-      yield this.render('./fixtures')
+    .use(function (ctx) {
+      return ctx.render('./fixtures')
     })
 
     request(app.listen()).get('/')
@@ -144,10 +144,10 @@ describe('koa-views', function () {
 
   // #43
   it('it should not overwrite an extension when given one', function (done) {
-    var app = koa()
+    const app = new Koa()
     .use(views(__dirname))
-    .use(function *() {
-      yield this.render('./fixtures/basic.ejs')
+    .use(function (ctx) {
+      return ctx.render('./fixtures/basic.ejs')
     })
 
     request(app.listen()).get('/')
