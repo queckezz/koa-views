@@ -18,7 +18,7 @@ $ npm install koa-views@next
 
 ## Templating engines
 
-As of right now, `koa-views` is using [consolidate](https://github.com/tj/consolidate.js) under the hood.
+`koa-views` is using [consolidate](https://github.com/tj/consolidate.js) under the hood.
 
 [List of supported engines](https://github.com/tj/consolidate.js#supported-template-engines)
 
@@ -46,25 +46,36 @@ app.use(async function (ctx, next) {
 });
 ```
 
-For more examples take a look at the [tests](./test/index.js)
+For more examples you can take a look at the [tests](./test/index.js).
 
 ## API
 
 #### `views(root, opts)`
 
-* `root`: Where your views are located. All views you `render()` are relative to this path.
+* `root`: Where your views are located. Must be an absolute path. All rendered views must be relative to this path
 * `opts` (optional)
 * `opts.extension`: Default extension for your views
 
+Instead of providing the full file extension you can omit it.
 ```js
-// instead of this
-yield this.render('user.jade')
-// you can
-yield this.render('user')
+app.use(async function (ctx) {
+  await ctx.render('user.jade')
+})
 ```
 
-* `opts.map`: map extension to an engine
+vs.
 
+```js
+app.use(views(__dirname, { extension: 'jade' }))
+
+app.use(async function (ctx) {
+  await ctx.render('user')
+})
+```
+
+* `opts.map`: Map a file extension to an engine
+
+In this example, each file ending with `.html` will get rendered using the `nunjucks` templating engine.
 ```js
 app.use(views(__dirname, { map: {html: 'nunjucks' }}))
 
