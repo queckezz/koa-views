@@ -116,10 +116,6 @@ module.exports = (path, opts) => {
         ctx.type = 'text/html'
 
         if (isHtml(ext) && !opts.map) {
-         // if (!isHtml(ext)) {
-         //   return Promise.reject(new Error(`Engine not found for file ".${ext}" file extension`))
-         // }
-
           return send(ctx, paths.rel, {
             root: path
           })
