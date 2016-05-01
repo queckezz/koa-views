@@ -32,7 +32,7 @@ describe('koa-views', function () {
 
   it('default to [ext] if a default engine is set', function (done) {
     const app = new Koa()
-    .use(views(__dirname, { extension: 'jade' }))
+    .use(views(__dirname, { extension: 'pug' }))
     .use(function (ctx) {
       return ctx.render('./fixtures/basic')
     })
@@ -45,22 +45,22 @@ describe('koa-views', function () {
 
   it('set and render state', function (done) {
     const app = new Koa()
-    .use(views(__dirname, { extension: 'jade' }))
+    .use(views(__dirname, { extension: 'pug' }))
     .use(function (ctx) {
-      ctx.state.engine = 'jade'
+      ctx.state.engine = 'pug'
       return ctx.render('./fixtures/global-state')
     })
 
     request(app.listen()).get('/')
       .expect('Content-Type', /html/)
-      .expect(/basic:jade/)
+      .expect(/basic:pug/)
       .expect(200, done)
   })
 
   // #25
   it('works with circular references in state', function (done) {
     const app = new Koa()
-    .use(views(__dirname, { extension: 'jade' }))
+    .use(views(__dirname, { extension: 'pug' }))
     .use(function (ctx) {
       ctx.state = {
         a: {},
@@ -72,13 +72,13 @@ describe('koa-views', function () {
       return ctx.render('./fixtures/global-state', {
         app: app,
         b: this.state,
-        engine: 'jade'
+        engine: 'pug'
       })
     })
 
     request(app.listen()).get('/')
       .expect('Content-Type', /html/)
-      .expect(/basic:jade/)
+      .expect(/basic:pug/)
       .expect(200, done)
   })
 
@@ -98,9 +98,9 @@ describe('koa-views', function () {
 
   it('merges global and local state ', function (done) {
     const app = new Koa()
-    .use(views(__dirname, { extension: 'jade' }))
+    .use(views(__dirname, { extension: 'pug' }))
     .use(function (ctx) {
-      ctx.state.engine = 'jade'
+      ctx.state.engine = 'pug'
 
       return ctx.render('./fixtures/state', {
         type: 'basic'
@@ -109,7 +109,7 @@ describe('koa-views', function () {
 
     request(app.listen()).get('/')
       .expect('Content-Type', /html/)
-      .expect(/basic:jade/)
+      .expect(/basic:pug/)
       .expect(200, done)
   })
 
