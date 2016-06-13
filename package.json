@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint .",
+    "xyz": "xyz",
     "test": "mocha --reporter dot --bail"
   },
   "dependencies": {
@@ -26,7 +27,8 @@
     "supertest": "^1.0.1",
     "tap-spec": "^4.1.1",
     "tape": "^4.4.0",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "xyz": "^0.5.0"
   },
   "repository": {
     "type": "git",
