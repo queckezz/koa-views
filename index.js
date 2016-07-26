@@ -126,6 +126,10 @@ module.exports = (path, opts) => {
             engineName = opts.map[ext]
           }
 
+          if (opts.locals) {
+              Object.assign(state, opts.locals);
+          }
+
           if (!engineName) {
             return Promise.reject(new Error(`Engine not found for file ".${ext}" file extension`))
           }
