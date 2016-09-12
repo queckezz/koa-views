@@ -11,6 +11,7 @@ module.exports = viewsMiddleware
 
 function viewsMiddleware (path, {
   extension = 'html',
+  options = {},
   map
 } = {}) {
   return function views (ctx, next) {
@@ -20,30 +21,32 @@ function viewsMiddleware (path, {
       extension = (extname(relPath) || '.' + extension).slice(1)
 
       return getPaths(path, relPath, extension)
-      .then((paths) => {
-        const state = ctx.state ? Object.assign(locals, ctx.state) : locals
-        debug('render `%s` with %j', paths.rel, state)
-        ctx.type = 'text/html'
+        .then((paths) => {
+          const state = Object.assign(locals, options, ctx.state || {})
+          debug('render `%s` with %j', paths.rel, state)
+          ctx.type = 'text/html'
 
-        if (isHtml(extension) && !map) {
-          return send(ctx, paths.rel, {
-            root: path
-          })
-        } else {
-          const engineName = map && map[extension]
-            ? map[extension]
-            : extension
+          if (isHtml(extension) && !map) {
+            return send(ctx, paths.rel, {
+              root: path
+            })
+          } else {
+            const engineName = map && map[extension]
+              ? map[extension]
+              : extension
 
-          if (!engineName) return Promise.reject(new Error(
-            `Engine not found for file ".${extension}" file extension`
-          ))
+            const render = consolidate[engineName]
 
-          return consolidate[engineName](resolve(paths.abs, paths.rel), state)
-          .then((html) => {
-            ctx.body = html
-          })
-        }
-      })
+            if (!engineName || !render) return Promise.reject(new Error(
+              `Engine not found for the ".${extension}" file extension`
+            ))
+
+            return render(resolve(paths.abs, paths.rel), state)
+              .then((html) => {
+                ctx.body = html
+              })
+          }
+        })
     }
 
     return next()

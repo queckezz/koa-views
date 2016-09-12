@@ -52,7 +52,7 @@ For more examples you can take a look at the [tests](./test/index.js).
 
 #### `views(root, opts)`
 
-* `root`: Where your views are located. Must be an absolute path. All rendered views must be relative to this path
+* `root`: Where your views are located. Must be an absolute path. All rendered views are relative to this path
 * `opts` (optional)
 * `opts.extension`: Default extension for your views
 
@@ -83,6 +83,28 @@ app.use(views(__dirname, { map: {html: 'nunjucks' }}))
 app.use(async function (ctx) {
   await ctx.render('user.html')
 })
+```
+
+* `opts.options`: These options will get passed to the view engine. This is the time to add `partials` and `helpers` etc.
+
+```js
+const app = new Koa()
+  .use(views(__dirname, {
+    map: { hbs: 'handlebars' },
+    options: {
+      helpers: {
+        uppercase: (str) => str.toUpperCase()
+      },
+
+      partials: {
+        subTitle: './my-partial' // requires ./my-partial.hbs
+      }
+    }
+  }))
+  .use(function (ctx) {
+    ctx.state = { title: 'my title', author: 'queckezz' }
+    return ctx.render('./my-view.hbs')
+  })
 ```
 
 ## Debug

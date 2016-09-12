@@ -129,6 +129,30 @@ describe('koa-views', function () {
       .expect(200, done)
   })
 
+  it('allows view options to be passed in', function (done) {
+    const app = new Koa()
+      .use(views(__dirname, {
+        map: { hbs: 'handlebars' },
+        options: {
+          helpers: {
+            uppercase: (str) => str.toUpperCase()
+          },
+
+          partials: {
+            subTitle: './view-options-partial'
+          }
+        }
+      }))
+      .use(function (ctx) {
+        ctx.state = { title: 'my title', author: 'queckezz' }
+        return ctx.render('./fixtures/view-options.hbs')
+      })
+
+    request(app.listen()).get('/')
+      .expect(/MY TITLE/)
+      .expect(200, done)
+  })
+
   // #23 && #27
   it('given a directory it should try to require index.[ext]', function (done) {
     const app = new Koa()
