@@ -4,49 +4,39 @@
 const { resolve, dirname, extname, join } = require('path')
 const debug = require('debug')('koa-views')
 const consolidate = require('consolidate')
-const defaults = require('@f/defaults')
 const { stat } = require('mz/fs')
 const send = require('koa-send')
 
 module.exports = viewsMiddleware
 
-function viewsMiddleware (path, opts) {
-  opts = defaults(opts || {}, {
-    extension: 'html'
-  })
-
-  debug('options: %j', opts)
-
+function viewsMiddleware (path, {
+  extension = 'html',
+  map
+} = {}) {
   return function views (ctx, next) {
     if (ctx.render) return next()
 
-    ctx.render = function (relPath, locals) {
-      if (locals == null) {
-        locals = {}
-      }
+    ctx.render = function (relPath, locals = {}) {
+      extension = (extname(relPath) || '.' + extension).slice(1)
 
-      let ext = (extname(relPath) || '.' + opts.extension).slice(1)
-
-      return getPaths(path, relPath, ext)
+      return getPaths(path, relPath, extension)
       .then((paths) => {
         const state = ctx.state ? Object.assign(locals, ctx.state) : locals
         debug('render `%s` with %j', paths.rel, state)
         ctx.type = 'text/html'
 
-        if (isHtml(ext) && !opts.map) {
+        if (isHtml(extension) && !map) {
           return send(ctx, paths.rel, {
             root: path
           })
         } else {
-          let engineName = ext
+          const engineName = map && map[extension]
+            ? map[extension]
+            : extension
 
-          if (opts.map && opts.map[ext]) {
-            engineName = opts.map[ext]
-          }
-
-          if (!engineName) {
-            return Promise.reject(new Error(`Engine not found for file ".${ext}" file extension`))
-          }
+          if (!engineName) return Promise.reject(new Error(
+            `Engine not found for file ".${extension}" file extension`
+          ))
 
           return consolidate[engineName](resolve(paths.abs, paths.rel), state)
           .then((html) => {
@@ -71,10 +61,7 @@ function getPaths(abs, rel, ext) {
     }
 
     // a file
-    return {
-      rel,
-      abs
-    }
+    return { rel, abs }
   })
   .catch((e) => {
     // not a valid file/directory
