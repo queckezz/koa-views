@@ -1,6 +1,6 @@
 
 const request = require('supertest')
-const views = require('../')
+const views = require('../src')
 const Koa = require('koa')
 require('should')
 
