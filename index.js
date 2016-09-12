@@ -5,15 +5,12 @@
 * Module dependencies.
 */
 
+const { resolve, dirname, extname, join } = require('path')
 const debug = require('debug')('koa-views')
-const defaults = require('@f/defaults')
-const dirname = require('path').dirname
-const extname = require('path').extname
-const join = require('path').join
-const resolve = require('path').resolve
-const send = require('koa-send')
-const { stat } = require('mz/fs')
 const consolidate = require('consolidate')
+const defaults = require('@f/defaults')
+const { stat } = require('mz/fs')
+const send = require('koa-send')
 
 /**
 * Check if `ext` is html.
