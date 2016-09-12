@@ -12,7 +12,7 @@ const extname = require('path').extname
 const join = require('path').join
 const resolve = require('path').resolve
 const send = require('koa-send')
-const _stat = require('fs').stat
+const { stat } = require('mz/fs')
 const consolidate = require('consolidate')
 
 /**
@@ -27,19 +27,6 @@ const isHtml = (ext) => ext === 'html'
  */
 
 const toFile = (fileName, ext) => `${fileName}.${ext}`
-
-/**
- * `fs.stat` promisfied.
- */
-
-const stat = (path) => {
-  return new Promise((resolve, reject) => {
-    _stat(path, (err, stats) => {
-      if (err) reject(err)
-      resolve(stats)
-    })
-  })
-}
 
 /**
  * Get the right path, respecting `index.[ext]`.
