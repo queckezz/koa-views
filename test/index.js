@@ -178,4 +178,20 @@ describe('koa-views', function () {
       .expect(/basic:ejs/)
       .expect(200, done)
   })
+
+  it('it should use an engineSource other than consolidate when provided', function(done) {
+    const app = new Koa()
+        .use(views(__dirname, {
+          engineSource: {
+            'foo': () => Promise.resolve('hello')
+          }
+        }))
+        .use(function (ctx) {
+          return ctx.render('./fixtures/basic.foo')
+        })
+
+    request(app.listen()).get('/')
+        .expect(/hello/)
+        .expect(200, done)
+  })
 })

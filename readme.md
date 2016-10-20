@@ -85,6 +85,19 @@ app.use(async function (ctx) {
 })
 ```
 
+* `opts.engineSource`: replace consolidate as default engine source
+
+If you’re not happy with consolidate or want more control over the engines, you can override it with this options. `engineSource` should
+be an object that maps an extension to a function that receives a path and options and returns a promise. In this example templates with the `foo` extension will always return `bar`.
+
+```js
+app.use(views(__dirname, { engineSource: {foo: () => Promise.resolve('bar')}}))
+
+app.use(async function (ctx) {
+  await ctx.render('index.foo')
+})
+```
+
 * `opts.options`: These options will get passed to the view engine. This is the time to add `partials` and `helpers` etc.
 
 ```js

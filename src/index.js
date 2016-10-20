@@ -10,6 +10,7 @@ const send = require('koa-send')
 module.exports = viewsMiddleware
 
 function viewsMiddleware (path, {
+  engineSource = consolidate,
   extension = 'html',
   options = {},
   map
@@ -35,7 +36,7 @@ function viewsMiddleware (path, {
               ? map[extension]
               : extension
 
-            const render = consolidate[engineName]
+            const render = engineSource[engineName]
 
             if (!engineName || !render) return Promise.reject(new Error(
               `Engine not found for the ".${extension}" file extension`
