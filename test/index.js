@@ -194,4 +194,38 @@ describe('koa-views', function () {
         .expect(/hello/)
         .expect(200, done)
   })
+
+  // #82
+  describe('extension is ejs, frist visit basic.html then visit basic should render basic.ejs', function () {
+    const app = new Koa()
+        .use(views(__dirname + '/fixtures', {
+          extension: 'ejs'
+        }))
+        .use(function (ctx, next) {
+          if("/html" === ctx.path){
+            return ctx.render("basic.html")
+          }
+          return next()
+        })
+        .use(function (ctx, next) {
+          if("/ejs" === ctx.path){
+            return ctx.render("basic")
+          }
+          return next()
+        })
+
+    const server = request(app.listen())
+
+    it('first visit html', function (done){
+      server.get('/html')
+        .expect(/basic:html/)
+        .expect(200, done)
+    })
+
+    it('then visit ejs should render basic basic.ejs', function (done){
+      server.get('/ejs')
+        .expect(/basic:ejs/)
+        .expect(200, done)
+    })
+  })
 })
