@@ -5,6 +5,7 @@
 [![NPM downloads][npm-downloads-image]][npm-url]
 [![Dependency Status][david-image]][david-url]
 [![License][license-image]][license-url]
+[![Maintainers Wanted](https://img.shields.io/badge/maintainers-wanted-red.svg)](https://github.com/pickhardt/maintainers-wanted)
 
 Template rendering middleware for koa.
 
