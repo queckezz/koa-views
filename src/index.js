@@ -19,22 +19,22 @@ function viewsMiddleware (path, {
     if (ctx.render) return next()
 
     ctx.render = function (relPath, locals = {}) {
-      extension = (extname(relPath) || '.' + extension).slice(1)
+      const suffix = (extname(relPath) || '.' + extension).slice(1)
 
-      return getPaths(path, relPath, extension)
+      return getPaths(path, relPath, suffix)
         .then((paths) => {
           const state = Object.assign(locals, options, ctx.state || {})
           debug('render `%s` with %j', paths.rel, state)
           ctx.type = 'text/html'
 
-          if (isHtml(extension) && !map) {
+          if (isHtml(suffix) && !map) {
             return send(ctx, paths.rel, {
               root: path
             })
           } else {
-            const engineName = map && map[extension]
-              ? map[extension]
-              : extension
+            const engineName = map && map[suffix]
+              ? map[suffix]
+              : suffix
 
             const render = engineSource[engineName]
 
