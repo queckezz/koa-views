@@ -148,9 +148,14 @@ describe('koa-views', function () {
         return ctx.render('./fixtures/view-options.hbs')
       })
 
-    request(app.listen()).get('/')
+    const server = request(app.listen())
+    server.get('/')
       .expect(/MY TITLE/)
-      .expect(200, done)
+      .expect(200, function() {
+        server.get('/')
+          .expect(/MY TITLE/)
+          .expect(200, done)
+      })
   })
 
   // #23 && #27
