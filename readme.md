@@ -8,7 +8,7 @@
 
 Template rendering middleware for koa.
 
-> **Note:** This master branch is for koa's upcoming version `koa@2`. Take a look at the `v1.x` branch for `koa@1`.
+> **Note:** This master branch is for `koa@2`. Take a look at the `v1.x` branch for `koa@1` (not supported).
 
 ## Installation
 
