@@ -13,7 +13,7 @@ Template rendering middleware for koa.
 ## Installation
 
 ```
-$ npm install koa-views@next
+$ npm install koa-views
 ```
 
 ## Templating engines
