@@ -233,4 +233,18 @@ describe('koa-views', function () {
         .expect(200, done)
     })
   })
+
+  // #87
+  it('name with dot', function (done) {
+    const app = new Koa()
+    .use(views(__dirname))
+    .use(function (ctx) {
+      return ctx.render('./fixtures/basic.test')
+    })
+
+    request(app.listen()).get('/')
+      .expect('Content-Type', /html/)
+      .expect(/basic:html/)
+      .expect(200, done)
+  })
 })

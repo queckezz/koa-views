@@ -19,10 +19,9 @@ function viewsMiddleware (path, {
     if (ctx.render) return next()
 
     ctx.render = function (relPath, locals = {}) {
-      const suffix = (extname(relPath) || '.' + extension).slice(1)
-
-      return getPaths(path, relPath, suffix)
+      return getPaths(path, relPath, extension)
         .then((paths) => {
+          const suffix = paths.ext
           const state = Object.assign(locals, options, ctx.state || {})
           // deep copy partials
           state.partials = Object.assign({}, options.partials || {})
@@ -41,7 +40,7 @@ function viewsMiddleware (path, {
             const render = engineSource[engineName]
 
             if (!engineName || !render) return Promise.reject(new Error(
-              `Engine not found for the ".${extension}" file extension`
+              `Engine not found for the ".${suffix}" file extension`
             ))
 
             return render(resolve(paths.abs, paths.rel), state)
@@ -62,17 +61,18 @@ function getPaths(abs, rel, ext) {
       // a directory
       return {
         rel: join(rel, toFile('index', ext)),
-        abs: join(abs, dirname(rel), rel)
+        abs: join(abs, dirname(rel), rel),
+        ext: ext
       }
     }
 
     // a file
-    return { rel, abs }
+    return { rel, abs, ext: extname(rel).slice(1) }
   })
   .catch((e) => {
     // not a valid file/directory
-    if (!extname(rel)) {
-      // Template file has been provided without extension
+    if (!extname(rel) || extname(rel).slice(1) !== ext) {
+      // Template file has been provided without the right extension
       // so append to it to try another lookup
       return getPaths(abs, `${rel}.${ext}`, ext)
     }
