@@ -1,4 +1,13 @@
 
+## 5.0.0~6.0.0
+
+* `koa@2` is supported by default and `koa@1` is not supported
+* don't compile released code to ES5 (this means you need Node_v7.6, the same as `koa@2` requires)
+* [BugFix] fix error if filename contains dot
+* [BugFix] default extension should not be changed
+* [BugFix] fix partials not working properly in handlebars
+* make consolidate engine source optional and allow configuration
+
 ## 5.0.0
 
 * `koa@2` support by @ifraixedes
