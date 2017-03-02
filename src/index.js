@@ -1,7 +1,7 @@
 
 'use strict'
 
-const { resolve, dirname, extname, join } = require('path')
+const { resolve, extname, join } = require('path')
 const debug = require('debug')('koa-views')
 const consolidate = require('consolidate')
 const { stat } = require('mz/fs')
