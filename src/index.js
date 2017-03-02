@@ -43,7 +43,7 @@ function viewsMiddleware (path, {
               `Engine not found for the ".${suffix}" file extension`
             ))
 
-            return render(resolve(paths.abs, paths.rel), state)
+            return render(resolve(path, paths.rel), state)
               .then((html) => {
                 ctx.body = html
               })
@@ -61,13 +61,12 @@ function getPaths(abs, rel, ext) {
       // a directory
       return {
         rel: join(rel, toFile('index', ext)),
-        abs: join(abs, dirname(rel), rel),
         ext: ext
       }
     }
 
     // a file
-    return { rel, abs, ext: extname(rel).slice(1) }
+    return { rel, ext: extname(rel).slice(1) }
   })
   .catch((e) => {
     // not a valid file/directory
