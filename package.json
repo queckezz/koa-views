@@ -24,6 +24,7 @@
     "handlebars": "^4.0.5",
     "koa": "^2.0.0-alpha.3",
     "mocha": "^2.2.4",
+    "nunjucks": "^3.0.0",
     "pre-commit": "^1.2.2",
     "pug": "^0.1.0",
     "should": "^7.0.2",

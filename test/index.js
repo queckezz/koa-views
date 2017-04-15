@@ -1,6 +1,7 @@
 
 const request = require('supertest')
 const views = require('../src')
+const path = require('path')
 const Koa = require('koa')
 require('should')
 
@@ -245,6 +246,33 @@ describe('koa-views', function () {
     request(app.listen()).get('/')
       .expect('Content-Type', /html/)
       .expect(/basic:html/)
+      .expect(200, done)
+  })
+
+  // #94
+  it('nunjucks with nunjucksEnv', function (done) {
+    const nunjucks = require('nunjucks')
+    const env = new nunjucks.Environment(
+      new nunjucks.FileSystemLoader(path.join(__dirname, 'fixtures'))
+    )
+    env.addFilter('shorten', function (str, count) {
+      return str.slice(0, count || 5)
+    })
+
+    const app = new Koa()
+    .use(views(path.join(__dirname, 'fixtures'), {
+      options: {
+        nunjucksEnv: env
+      },
+      map: { html: 'nunjucks' }
+    }))
+    .use(function (ctx) {
+      return ctx.render('nunjucks-filter', { message: 'this is a long message' })
+    })
+
+    request(app.listen()).get('/')
+      .expect('Content-Type', /html/)
+      .expect(/this </)
       .expect(200, done)
   })
 })
