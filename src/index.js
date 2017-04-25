@@ -33,6 +33,9 @@ function viewsMiddleware (path, {
               root: path
             })
           } else {
+            if (!options.hasOwnProperty('nunjucksEnv')) {
+              state.settings = { views: path }
+            }
             const engineName = map && map[suffix]
               ? map[suffix]
               : suffix
