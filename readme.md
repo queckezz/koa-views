@@ -59,14 +59,14 @@ For more examples you can take a look at the [tests](./test/index.js).
 Instead of providing the full file extension you can omit it.
 ```js
 app.use(async function (ctx) {
-  await ctx.render('user.jade')
+  await ctx.render('user.pug')
 })
 ```
 
 vs.
 
 ```js
-app.use(views(__dirname, { extension: 'jade' }))
+app.use(views(__dirname, { extension: 'pug' }))
 
 app.use(async function (ctx) {
   await ctx.render('user')
