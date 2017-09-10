@@ -12,8 +12,8 @@ Template rendering middleware for koa.
 
 ## Installation
 
-```
-$ npm install koa-views
+```sh
+npm install koa-views
 ```
 
 ## Templating engines
@@ -47,6 +47,24 @@ app.use(async function (ctx, next) {
 ```
 
 For more examples you can take a look at the [tests](./test/index.js).
+
+## Simple middleware
+
+If you need to simply render pages with locals, you can install `koa-views-render`:
+
+```sh
+npm install koa-views-render
+```
+
+Then simply use it on your routes and its arguments will be passed to `ctx.render`.
+
+```js
+var render = require('koa-views-render');
+
+// ...
+
+app.use(render('home', { title 'Home Page' });
+```
 
 ## API
 
