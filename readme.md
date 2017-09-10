@@ -53,7 +53,7 @@ For more examples you can take a look at the [tests](./test/index.js).
 If you need to simply render pages with locals, you can install `koa-views-render`:
 
 ```sh
-npm instal koa-views-render
+npm install koa-views-render
 ```
 
 Then simply use it on your routes and its arguments will be passed to `ctx.render`.
