@@ -12,7 +12,7 @@
   "dependencies": {
     "consolidate": "^0.14.1",
     "debug": "^3.0.1",
-    "get-paths": "^0.0.1",
+    "get-paths": "^0.0.2",
     "koa-send": "^4.0.0",
     "mz": "^2.4.0"
   },
