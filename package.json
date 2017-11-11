@@ -14,7 +14,8 @@
     "debug": "^3.0.1",
     "get-paths": "^0.0.2",
     "koa-send": "^4.0.0",
-    "mz": "^2.4.0"
+    "mz": "^2.4.0",
+    "pretty": "^2.0.0"
   },
   "devDependencies": {
     "ejs": "^2.4.1",

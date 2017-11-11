@@ -5,6 +5,7 @@ const debug = require('debug')('koa-views')
 const consolidate = require('consolidate')
 const send = require('koa-send')
 const getPaths = require('get-paths')
+const pretty = require('pretty')
 
 module.exports = viewsMiddleware
 
@@ -39,6 +40,12 @@ function viewsMiddleware(
             )
 
           return render(resolve(path, paths.rel), state).then(html => {
+            // since pug has deprecated `pretty` option
+            // we'll use the `pretty` package in the meanwhile
+            if (locals.pretty) {
+              debug('using `pretty` package to beautify HTML')
+              html = pretty(html)
+            }
             ctx.body = html
           })
         }
