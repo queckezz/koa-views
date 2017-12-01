@@ -10,7 +10,7 @@
   },
   "precommit": "lint, test",
   "dependencies": {
-    "consolidate": "^0.14.1",
+    "consolidate": "^0.15.0",
     "debug": "^3.0.1",
     "get-paths": "^0.0.2",
     "koa-send": "^4.0.0",
@@ -37,9 +37,6 @@
     "tape": "^4.4.0",
     "underscore": "^1.8.3",
     "xyz": "^2.1.0"
-  },
-  "peerDependencies": {
-    "koa": "2.x"
   },
   "repository": {
     "type": "git",
