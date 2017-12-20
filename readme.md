@@ -6,9 +6,7 @@
 [![Dependency Status][david-image]][david-url]
 [![License][license-image]][license-url]
 
-Template rendering middleware for koa.
-
-> **Note:** This master branch is for `koa@2`. Take a look at the `v1.x` branch for `koa@1` (not supported).
+Template rendering middleware for `koa@2`.
 
 ## Installation
 
