@@ -63,7 +63,7 @@ var render = require('koa-views-render');
 
 // ...
 
-app.use(render('home', { title 'Home Page' });
+app.use(render('home', { title : 'Home Page' });
 ```
 
 ## API
