@@ -6,7 +6,7 @@
 [![Dependency Status][david-image]][david-url]
 [![License][license-image]][license-url]
 
-Template rendering middleware for `koa@2`.
+Template rendering middleware for `koa@2`. Works for a single view directory and/or a module-based view location structure.
 
 ## Installation
 
@@ -20,13 +20,14 @@ npm install koa-views
 
 [List of supported engines](https://github.com/tj/consolidate.js#supported-template-engines)
 
-## Example
+## Example - Single Template Path
 
 ```js
 var views = require('koa-views');
 
 // Must be used before any router is used
-app.use(views(__dirname + '/views', {
+app.use(views({
+  absPath: __dirname + '/views',
   map: {
     html: 'underscore'
   }
@@ -38,11 +39,41 @@ app.use(async function (ctx, next) {
     title: 'app'
   };
 
-  await ctx.render('user', {
-    user: 'John'
-  });
+  await ctx.render('user', { user: 'John' });
+  // Will render `${__dirname}/views/user.html`
 });
 ```
+
+## Example - Module-based Template Paths
+
+This method exists for a module-based approaches for organizing your application. If your site's modules
+ store their templates inside of the `views/templates` sub-folder of any given module, and you have a `users`,
+ you could then do the following:
+
+```js
+var views = require('koa-views');
+
+// Must be used before any router is used
+app.use(views({
+  appDir: __dirname,
+  templatesDir: 'views/templates',
+  map: {
+    html: 'underscore'
+  }
+}));
+
+app.use(async function (ctx, next) {
+  ctx.state = {
+    session: this.session,
+    title: 'app'
+  };
+
+  await ctx.render('user.pug', { user: 'John' }, 'users');
+  // Will render `${__dirname}/users/views/templates/user.pug`
+});
+```
+
+In this way, you can render
 
 For more examples you can take a look at the [tests](./test/index.js).
 
@@ -66,10 +97,10 @@ app.use(render('home', { title : 'Home Page' });
 
 ## API
 
-#### `views(root, opts)`
+#### `views(opts)`
 
-* `root`: Where your views are located. Must be an absolute path. All rendered views are relative to this path
 * `opts` (optional)
+* `opts.absPath` : Where your views are located. Must be an absolute path. All rendered views are relative to this path
 * `opts.extension`: Default extension for your views
 
 Instead of providing the full file extension you can omit it.
@@ -82,7 +113,7 @@ app.use(async function (ctx) {
 vs.
 
 ```js
-app.use(views(__dirname, { extension: 'pug' }))
+app.use(views({ absPath: `${__dirname}/views`, extension: 'pug' }))
 
 app.use(async function (ctx) {
   await ctx.render('user')
@@ -93,7 +124,7 @@ app.use(async function (ctx) {
 
 In this example, each file ending with `.html` will get rendered using the `nunjucks` templating engine.
 ```js
-app.use(views(__dirname, { map: {html: 'nunjucks' }}))
+app.use(views({ absPath: `${__dirname}/views`, map: {html: 'nunjucks' }}))
 
 // render `user.html` with nunjucks
 app.use(async function (ctx) {
@@ -107,7 +138,7 @@ If you’re not happy with consolidate or want more control over the engines, yo
 be an object that maps an extension to a function that receives a path and options and returns a promise. In this example templates with the `foo` extension will always return `bar`.
 
 ```js
-app.use(views(__dirname, { engineSource: {foo: () => Promise.resolve('bar')}}))
+app.use(views({ absPath: `${__dirname}/views`, engineSource: {foo: () => Promise.resolve('bar')}}))
 
 app.use(async function (ctx) {
   await ctx.render('index.foo')
@@ -118,7 +149,8 @@ app.use(async function (ctx) {
 
 ```js
 const app = new Koa()
-  .use(views(__dirname, {
+  .use(views({
+    absPath: `${__dirname}/views`, 
     map: { hbs: 'handlebars' },
     options: {
       helpers: {
