@@ -1,6 +1,6 @@
 'use strict'
 
-const { resolve } = require('path')
+const path = require('path')
 const debug = require('debug')('koa-views')
 const consolidate = require('consolidate')
 const send = require('koa-send')
@@ -9,37 +9,46 @@ const pretty = require('pretty')
 
 module.exports = viewsMiddleware
 
-function viewsMiddleware(
-  path,
-  { engineSource = consolidate, extension = 'html', options = {}, map } = {}
-) {
+function viewsMiddleware({
+  absPath = null,
+  engineSource = consolidate,
+  appDir = '',
+  templatesDir = '',
+  extension = 'html',
+  options = {},
+  map
+  } = {}) {
   return function views(ctx, next) {
     if (ctx.render) return next()
 
-    ctx.render = function(relPath, locals = {}) {
-      return getPaths(path, relPath, extension).then(paths => {
+    ctx.render = function(relPath, locals = {}, moduleName = null) {
+      const absRootPath = moduleName ?
+        path.join(appDir, moduleName, templatesDir) :
+        absPath;
+
+      return getPaths(absRootPath, relPath, extension).then(paths => {
         const suffix = paths.ext
         const state = Object.assign(locals, options, ctx.state || {})
         // deep copy partials
         state.partials = Object.assign({}, options.partials || {})
         debug('render `%s` with %j', paths.rel, state)
+        if (appDir && state.basedir) {
+          state.basedir = path.join(appDir, state.basedir)
+        }
         ctx.type = 'text/html'
 
         if (isHtml(suffix) && !map) {
-          return send(ctx, paths.rel, {
-            root: path
-          })
+          return send(ctx, paths.rel, { root: absRootPath });
         } else {
           const engineName = map && map[suffix] ? map[suffix] : suffix
 
           const render = engineSource[engineName]
 
-          if (!engineName || !render)
-            return Promise.reject(
-              new Error(`Engine not found for the ".${suffix}" file extension`)
-            )
+          if (!engineName || !render) {
+            return Promise.reject(new Error(`Engine not found for the ".${suffix}" file extension`));
+          }
 
-          return render(resolve(path, paths.rel), state).then(html => {
+          return render(path.resolve(absRootPath, paths.rel), state).then(html => {
             // since pug has deprecated `pretty` option
             // we'll use the `pretty` package in the meanwhile
             if (locals.pretty) {
