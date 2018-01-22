@@ -1,13 +1,13 @@
-'use strict';
+'use strict'
 
-const path = require('path');
-const debug = require('debug')('koa-views');
-const consolidate = require('consolidate');
-const send = require('koa-send');
-const getPaths = require('get-paths');
-const pretty = require('pretty');
+const path = require('path')
+const debug = require('debug')('koa-views')
+const consolidate = require('consolidate')
+const send = require('koa-send')
+const getPaths = require('get-paths')
+const pretty = require('pretty')
 
-module.exports = viewsMiddleware;
+module.exports = viewsMiddleware
 
 function viewsMiddleware({
   absPath = null,
@@ -17,54 +17,54 @@ function viewsMiddleware({
   extension = 'html',
   options = {},
   map
-  } = {}) {
+} = {}) {
   return function views(ctx, next) {
-    if (ctx.render) return next();
+    if (ctx.render) return next()
 
     ctx.render = function(relPath, locals = {}, moduleName = null) {
-      const absRootPath = moduleName ?
-        path.join(appDir, moduleName, templatesDir) :
-        absPath;
+      const absRootPath = moduleName
+        ? path.join(appDir, moduleName, templatesDir)
+        : absPath
 
       return getPaths(absRootPath, relPath, extension).then(paths => {
-        const suffix = paths.ext;
-        const state = Object.assign(locals, options, ctx.state || {});
+        const suffix = paths.ext
+        const state = Object.assign(locals, options, ctx.state || {})
         // deep copy partials
-        state.partials = Object.assign({}, options.partials || {});
-        debug('render `%s` with %j', paths.rel, state);
+        state.partials = Object.assign({}, options.partials || {})
+        debug('render `%s` with %j', paths.rel, state)
         if (appDir && state.basedir) {
-          state.basedir = path.join(appDir, state.basedir);
+          state.basedir = path.join(appDir, state.basedir)
         }
-        ctx.type = 'text/html';
+        ctx.type = 'text/html'
 
         if (isHtml(suffix) && !map) {
-          return send(ctx, paths.rel, { root: absRootPath });
+          return send(ctx, paths.rel, { root: absRootPath })
         } else {
-          const engineName = map && map[suffix] ? map[suffix] : suffix;
+          const engineName = map && map[suffix] ? map[suffix] : suffix
 
-          const render = engineSource[engineName];
+          const render = engineSource[engineName]
 
           if (!engineName || !render) {
-            return Promise.reject(new Error(`Engine not found for the ".${suffix}" file extension`));
+            return Promise.reject(new Error(`Engine not found for the ".${suffix}" file extension`))
           }
 
           return render(path.resolve(absRootPath, paths.rel), state).then(html => {
             // since pug has deprecated `pretty` option
             // we'll use the `pretty` package in the meanwhile
             if (locals.pretty) {
-              debug('using `pretty` package to beautify HTML');
-              html = pretty(html);
+              debug('using `pretty` package to beautify HTML')
+              html = pretty(html)
             }
-            ctx.body = html;
+            ctx.body = html
           })
         }
       })
-    };
+    }
 
-    return next();
+    return next()
   }
 }
 
 function isHtml(ext) {
-  return ext === 'html';
+  return ext === 'html'
 }

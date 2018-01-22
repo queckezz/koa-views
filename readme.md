@@ -46,9 +46,9 @@ app.use(async function (ctx, next) {
 
 ## Example - Module-based Template Paths
 
-This method exists for a module-based approaches for organizing your application. If your site's modules
- store their templates inside of the `views/templates` sub-folder of any given module, and you have a `users`,
- you could then do the following:
+This method exists for module-based approaches for organizing your application code. If your site's modules
+ store their templates inside of the `views/templates` sub-folder of any given module, and you have a `users`
+ module, you could then do the following:
 
 ```js
 var views = require('koa-views');

@@ -17,7 +17,7 @@ describe('koa-views', () => {
   })
 
   it('default to html', done => {
-    const app = new Koa().use(views(__dirname)).use(ctx => {
+    const app = new Koa().use(views({ absPath: __dirname })).use(ctx => {
       return ctx.render('./fixtures/basic')
     })
 
@@ -30,7 +30,7 @@ describe('koa-views', () => {
 
   it('default to [ext] if a default engine is set', done => {
     const app = new Koa()
-      .use(views(__dirname, {extension: 'pug'}))
+      .use(views({absPath: __dirname, extension: 'pug'}))
       .use(ctx => {
         return ctx.render('./fixtures/basic')
       })
@@ -44,7 +44,7 @@ describe('koa-views', () => {
 
   it('set and render state', done => {
     const app = new Koa()
-      .use(views(__dirname, {extension: 'pug'}))
+      .use(views({absPath: __dirname, extension: 'pug'}))
       .use(ctx => {
         ctx.state.engine = 'pug'
         return ctx.render('./fixtures/global-state')
@@ -60,7 +60,7 @@ describe('koa-views', () => {
   // #25
   it('works with circular references in state', done => {
     const app = new Koa()
-      .use(views(__dirname, {extension: 'pug'}))
+      .use(views({absPath: __dirname, extension: 'pug'}))
       .use(function (ctx) {
         ctx.state = {
           a: {},
@@ -85,7 +85,7 @@ describe('koa-views', () => {
 
   it('`map` given `engine` to given file `ext`', done => {
     const app = new Koa()
-      .use(views(__dirname, {map: {html: 'underscore'}}))
+      .use(views({absPath: __dirname, map: {html: 'underscore'}}))
       .use(ctx => {
         ctx.state.engine = 'underscore'
         return ctx.render('./fixtures/underscore')
@@ -100,7 +100,7 @@ describe('koa-views', () => {
 
   it('merges global and local state ', done => {
     const app = new Koa()
-      .use(views(__dirname, {extension: 'pug'}))
+      .use(views({absPath: __dirname, extension: 'pug'}))
       .use(ctx => {
         ctx.state.engine = 'pug'
 
@@ -136,7 +136,8 @@ describe('koa-views', () => {
   it('allows view options to be passed in', done => {
     const app = new Koa()
       .use(
-        views(__dirname, {
+        views({
+          absPath: __dirname,
           map: {hbs: 'handlebars'},
           options: {
             helpers: {
@@ -168,7 +169,7 @@ describe('koa-views', () => {
 
   // #23 && #27
   it('given a directory it should try to require index.[ext]', done => {
-    const app = new Koa().use(views(__dirname)).use(ctx => {
+    const app = new Koa().use(views({absPath: __dirname})).use(ctx => {
       return ctx.render('./fixtures')
     })
 
@@ -180,7 +181,7 @@ describe('koa-views', () => {
 
   // #43
   it('it should not overwrite an extension when given one', done => {
-    const app = new Koa().use(views(__dirname)).use(ctx => {
+    const app = new Koa().use(views({absPath: __dirname})).use(ctx => {
       return ctx.render('./fixtures/basic.ejs')
     })
 
@@ -193,7 +194,8 @@ describe('koa-views', () => {
   it('it should use an engineSource other than consolidate when provided', done => {
     const app = new Koa()
       .use(
-        views(__dirname, {
+        views({
+          absPath: __dirname,
           engineSource: {
             foo: () => Promise.resolve('hello')
           }
@@ -213,7 +215,8 @@ describe('koa-views', () => {
   describe('extension is ejs, frist visit basic.html then visit basic should render basic.ejs', () => {
     const app = new Koa()
       .use(
-        views(__dirname, {
+        views({
+          absPath: __dirname,
           extension: 'ejs'
         })
       )
@@ -249,7 +252,7 @@ describe('koa-views', () => {
 
   // #87
   it('name with dot', done => {
-    const app = new Koa().use(views(__dirname)).use(ctx => {
+    const app = new Koa().use(views({absPath: __dirname})).use(ctx => {
       return ctx.render('./fixtures/basic.test')
     })
 
@@ -272,7 +275,8 @@ describe('koa-views', () => {
 
     const app = new Koa()
       .use(
-        views(path.join(__dirname, 'fixtures'), {
+        views({
+          absPath: path.join(__dirname, 'fixtures'),
           options: {
             nunjucksEnv: env
           },
