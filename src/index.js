@@ -16,7 +16,7 @@ function viewsMiddleware(
   return function views(ctx, next) {
     if (ctx.render) return next()
 
-    ctx.render = function(relPath, locals = {}) {
+    ctx.response.render = ctx.render = function(relPath, locals = {}) {
       return getPaths(path, relPath, extension).then(paths => {
         const suffix = paths.ext
         const state = Object.assign(locals, options, ctx.state || {})
