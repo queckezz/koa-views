@@ -9,6 +9,7 @@ describe('koa-views', () => {
     const app = new Koa().use(views()).use(ctx => {
       should(ctx.render).be.ok()
       should(ctx.render).be.a.Function()
+      should(ctx.response.render).be.equal(ctx.render)
     })
 
     request(app.listen())
