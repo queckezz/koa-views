@@ -11,7 +11,7 @@ module.exports = viewsMiddleware
 
 function viewsMiddleware(
   path,
-  { engineSource = consolidate, extension = 'html', options = {}, map } = {}
+  { engineSource = consolidate, extension = 'html', options = {}, map, mount = { enable: false, var: 'templatePath' } } = {}
 ) {
   return function views(ctx, next) {
     if (ctx.render) return next()
@@ -20,6 +20,15 @@ function viewsMiddleware(
       return getPaths(path, relPath, extension).then(paths => {
         const suffix = paths.ext
         const state = Object.assign(locals, options, ctx.state || {})
+        let absolutePath = resolve(path, paths.rel)
+
+        // Mount the variable to ctx
+        if (mount.enable) {
+          if (ctx[mount.var]) {
+            Promise.reject(new Error(`Mount variable name "${mount.var}" is occupied.Please change another`))
+          }
+          ctx[mount.var] = absolutePath
+        }
         // deep copy partials
         state.partials = Object.assign({}, options.partials || {})
         debug('render `%s` with %j', paths.rel, state)
@@ -34,12 +43,8 @@ function viewsMiddleware(
 
           const render = engineSource[engineName]
 
-          if (!engineName || !render)
-            return Promise.reject(
-              new Error(`Engine not found for the ".${suffix}" file extension`)
-            )
-
-          return render(resolve(path, paths.rel), state).then(html => {
+          if (!engineName || !render) return Promise.reject(new Error(`Engine not found for the ".${suffix}" file extension`))
+          return render(absolutePath, state).then(html => {
             // since pug has deprecated `pretty` option
             // we'll use the `pretty` package in the meanwhile
             if (locals.pretty) {
