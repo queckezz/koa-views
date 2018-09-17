@@ -32,7 +32,7 @@ app.use(views(__dirname + '/views', {
   }
 }));
 
-app.use(async function (ctx, next) {
+app.use(async function (ctx) {
   ctx.state = {
     session: this.session,
     title: 'app'
@@ -61,7 +61,7 @@ var render = require('koa-views-render');
 
 // ...
 
-app.use(render('home', { title : 'Home Page' });
+app.use(render('home', { title : 'Home Page' }));
 ```
 
 ## API
