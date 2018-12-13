@@ -20,6 +20,8 @@ npm install koa-views
 
 [List of supported engines](https://github.com/tj/consolidate.js#supported-template-engines)
 
+**NOTE**: you must still install the engines you wish to use, add them to your package.json dependencies.
+
 ## Example
 
 ```js
