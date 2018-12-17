@@ -6,14 +6,14 @@
   "scripts": {
     "lint": "eslint .",
     "xyz": "xyz",
-    "test": "mocha --reporter dot --bail"
+    "test": "mocha --reporter dot --bail --exit"
   },
   "precommit": "lint, test",
   "dependencies": {
     "consolidate": "^0.15.0",
-    "debug": "^3.1.0",
-    "get-paths": "^0.0.2",
-    "koa-send": "^4.0.0",
+    "debug": "^4.1.0",
+    "get-paths": "^0.0.4",
+    "koa-send": "^5.0.0",
     "mz": "^2.4.0",
     "pretty": "^2.0.0"
   },
@@ -27,13 +27,13 @@
     "eslint-plugin-standard": "^3.0.1",
     "handlebars": "^4.0.5",
     "koa": "^2.0.0-alpha.3",
-    "mocha": "^3.5.3",
+    "mocha": "^5.2.0",
     "nunjucks": "^3.0.0",
     "pre-commit": "^1.2.2",
     "pug": "^2.0.0-rc.4",
     "should": "^13.1.0",
     "supertest": "^3.0.0",
-    "tap-spec": "^4.1.1",
+    "tap-spec": "^5.0.0",
     "tape": "^4.4.0",
     "underscore": "^1.8.3",
     "xyz": "^2.1.0"
