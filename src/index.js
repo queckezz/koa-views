@@ -11,7 +11,7 @@ module.exports = viewsMiddleware
 
 function viewsMiddleware(
   path,
-  { engineSource = consolidate, extension = 'html', options = {}, map } = {}
+  { autoRender = true, engineSource = consolidate, extension = 'html', options = {}, map } = {}
 ) {
   return function views(ctx, next) {
     if (ctx.render) return next()
@@ -46,7 +46,13 @@ function viewsMiddleware(
               debug('using `pretty` package to beautify HTML')
               html = pretty(html)
             }
-            ctx.body = html
+
+            if (autoRender) {
+              ctx.body = html
+            }
+            else {
+              return Promise.resolve(html)
+            }
           })
         }
       })

@@ -72,6 +72,27 @@ app.use(render('home', { title : 'Home Page' }));
 
 * `root`: Where your views are located. Must be an absolute path. All rendered views are relative to this path
 * `opts` (optional)
+
+* `opts.autoRender`: Whether to use `ctx.body` to receive the rendered template string. Defaults to `true`.
+
+```js
+app.use(views(__dirname, { autoRender: false, extension: 'pug' }))
+
+app.use(async function (ctx) {
+  return await ctx.render('user.pug')
+})
+```
+
+vs.
+
+```js
+app.use(views(__dirname, { extension: 'pug' }))
+
+app.use(async function (ctx) {
+  await ctx.render('user.pug')
+})
+```
+
 * `opts.extension`: Default extension for your views
 
 Instead of providing the full file extension you can omit it.
