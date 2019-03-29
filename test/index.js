@@ -29,6 +29,19 @@ describe('koa-views', () => {
       .expect(200, done)
   })
 
+  it('autoRender is false', done => {
+    const app = new Koa().use(views(__dirname, { autoRender: false, extension: 'ejs' })).use(async (ctx) => {
+      let res = await ctx.render('./fixtures/basic')
+      ctx.body = res
+    })
+
+    request(app.listen())
+      .get('/')
+      .expect('Content-Type', /html/)
+      .expect(/basic:ejs/)
+      .expect(200, done)
+  })
+
   it('default to [ext] if a default engine is set', done => {
     const app = new Koa()
       .use(views(__dirname, {extension: 'pug'}))
