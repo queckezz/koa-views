@@ -49,8 +49,7 @@ function viewsMiddleware(
 
             if (autoRender) {
               ctx.body = html
-            }
-            else {
+            } else {
               return Promise.resolve(html)
             }
           })
