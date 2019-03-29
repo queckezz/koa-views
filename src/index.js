@@ -1,6 +1,6 @@
 'use strict'
 
-const { resolve } = require('path')
+const { isAbsolute, resolve } = require('path')
 const debug = require('debug')('koa-views')
 const consolidate = require('consolidate')
 const send = require('koa-send')
@@ -17,7 +17,9 @@ function viewsMiddleware(
     if (ctx.render) return next()
 
     ctx.response.render = ctx.render = function(relPath, locals = {}) {
-      return getPaths(path, relPath, extension).then(paths => {
+      let isAbsolutePath = isAbsolute(relPath)
+      let prefixPath = isAbsolutePath ? '/' : path
+      return getPaths(prefixPath, relPath, extension).then(paths => {
         const suffix = paths.ext
         const state = Object.assign(locals, options, ctx.state || {})
         // deep copy partials
@@ -27,7 +29,7 @@ function viewsMiddleware(
 
         if (isHtml(suffix) && !map) {
           return send(ctx, paths.rel, {
-            root: path
+            root: isAbsolutePath ? '/' : path
           })
         } else {
           const engineName = map && map[suffix] ? map[suffix] : suffix

@@ -42,6 +42,30 @@ describe('koa-views', () => {
       .expect(200, done)
   })
 
+  it('absolute path - html', done => {
+    const app = new Koa().use(views(path.resolve())).use(ctx => {
+      return ctx.render(path.resolve('test/fixtures/basic.html'))
+    })
+
+    request(app.listen())
+      .get('/')
+      .expect('Content-Type', /html/)
+      .expect(/basic:html/)
+      .expect(200, done)
+  })
+
+  it('absolute path - not html', done => {
+    const app = new Koa().use(views(path.resolve())).use(ctx => {
+      return ctx.render(path.resolve('test/fixtures/basic.ejs'))
+    })
+
+    request(app.listen())
+      .get('/')
+      .expect('Content-Type', /html/)
+      .expect(/basic:ejs/)
+      .expect(200, done)
+  })
+
   it('default to [ext] if a default engine is set', done => {
     const app = new Koa()
       .use(views(__dirname, {extension: 'pug'}))
