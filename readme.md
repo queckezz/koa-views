@@ -150,7 +150,9 @@ const app = new Koa()
 
       partials: {
         subTitle: './my-partial' // requires ./my-partial.hbs
-      }
+      },
+      
+      cache: true // cache the template string or not
     }
   }))
   .use(function (ctx) {
