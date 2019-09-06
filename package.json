@@ -10,9 +10,9 @@
   },
   "precommit": "lint, test",
   "dependencies": {
-    "consolidate": "^0.15.0",
+    "consolidate": "0.15.1",
     "debug": "^4.1.0",
-    "get-paths": "^0.0.4",
+    "get-paths": "0.0.7",
     "koa-send": "^5.0.0",
     "mz": "^2.4.0",
     "pretty": "^2.0.0"
