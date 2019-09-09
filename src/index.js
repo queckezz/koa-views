@@ -21,7 +21,7 @@ function viewsMiddleware(
         const suffix = paths.ext
         const state = Object.assign(locals, options, ctx.state || {})
         // deep copy partials
-        state.partials = Object.assign({}, options.partials || {})
+        state.partials = Object.assign(Object.create(null), options.partials || {})
         debug('render `%s` with %j', paths.rel, state)
         ctx.type = 'text/html'
 
