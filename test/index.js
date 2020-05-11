@@ -97,6 +97,30 @@ describe('koa-views', () => {
       .expect(200, done)
   })
 
+  // #138
+  it('works with bigint in state', done => {
+    const app = new Koa()
+      .use(views(__dirname, {extension: 'pug'}))
+      .use(function (ctx) {
+        ctx.state = {
+          a: { x: 132n },
+          app
+        }
+
+        return ctx.render('./fixtures/global-state', {
+          app,
+          b: this.state,
+          engine: 'pug'
+        })
+      })
+
+    request(app.listen())
+      .get('/')
+      .expect('Content-Type', /html/)
+      .expect(/basic:pug/)
+      .expect(200, done)
+  })
+
   it('`map` given `engine` to given file `ext`', done => {
     const app = new Koa()
       .use(views(__dirname, {map: {html: 'underscore'}}))

@@ -9,6 +9,22 @@ const pretty = require('pretty')
 
 module.exports = viewsMiddleware
 
+const bigIntReplacer = () => {
+  const seen = new WeakSet()
+  return (key, value) => {
+    if (typeof value === 'bigint') return value.toString()
+
+    if (typeof value === 'object' && value !== null) {
+      if (seen.has(value)) {
+        return
+      }
+      seen.add(value)
+    }
+
+    return value
+  }
+}
+
 function viewsMiddleware(
   path,
   { autoRender = true, engineSource = consolidate, extension = 'html', options = {}, map } = {}
@@ -22,7 +38,7 @@ function viewsMiddleware(
         const state = Object.assign(locals, options, ctx.state || {})
         // deep copy partials
         state.partials = Object.assign(Object.create(null), options.partials || {})
-        debug('render `%s` with %j', paths.rel, state)
+        debug('render `%s` with %s', paths.rel, JSON.stringify(state, bigIntReplacer()))
         ctx.type = 'text/html'
 
         if (isHtml(suffix) && !map) {
