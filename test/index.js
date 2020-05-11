@@ -31,7 +31,7 @@ describe('koa-views', () => {
 
   it('autoRender is false', done => {
     const app = new Koa().use(views(__dirname, { autoRender: false, extension: 'ejs' })).use(async (ctx) => {
-      let res = await ctx.render('./fixtures/basic')
+      const res = await ctx.render('./fixtures/basic')
       ctx.body = res
     })
 
@@ -44,7 +44,7 @@ describe('koa-views', () => {
 
   it('default to [ext] if a default engine is set', done => {
     const app = new Koa()
-      .use(views(__dirname, {extension: 'pug'}))
+      .use(views(__dirname, { extension: 'pug' }))
       .use(ctx => {
         return ctx.render('./fixtures/basic')
       })
@@ -58,7 +58,7 @@ describe('koa-views', () => {
 
   it('set and render state', done => {
     const app = new Koa()
-      .use(views(__dirname, {extension: 'pug'}))
+      .use(views(__dirname, { extension: 'pug' }))
       .use(ctx => {
         ctx.state.engine = 'pug'
         return ctx.render('./fixtures/global-state')
@@ -74,7 +74,7 @@ describe('koa-views', () => {
   // #25
   it('works with circular references in state', done => {
     const app = new Koa()
-      .use(views(__dirname, {extension: 'pug'}))
+      .use(views(__dirname, { extension: 'pug' }))
       .use(function (ctx) {
         ctx.state = {
           a: {},
@@ -100,7 +100,7 @@ describe('koa-views', () => {
   // #138
   it('works with bigint in state', done => {
     const app = new Koa()
-      .use(views(__dirname, {extension: 'pug'}))
+      .use(views(__dirname, { extension: 'pug' }))
       .use(function (ctx) {
         ctx.state = {
           a: { x: 132n },
@@ -123,7 +123,7 @@ describe('koa-views', () => {
 
   it('`map` given `engine` to given file `ext`', done => {
     const app = new Koa()
-      .use(views(__dirname, {map: {html: 'underscore'}}))
+      .use(views(__dirname, { map: { html: 'underscore' } }))
       .use(ctx => {
         ctx.state.engine = 'underscore'
         return ctx.render('./fixtures/underscore')
@@ -138,7 +138,7 @@ describe('koa-views', () => {
 
   it('merges global and local state ', done => {
     const app = new Koa()
-      .use(views(__dirname, {extension: 'pug'}))
+      .use(views(__dirname, { extension: 'pug' }))
       .use(ctx => {
         ctx.state.engine = 'pug'
 
@@ -175,7 +175,7 @@ describe('koa-views', () => {
     const app = new Koa()
       .use(
         views(__dirname, {
-          map: {hbs: 'handlebars'},
+          map: { hbs: 'handlebars' },
           options: {
             helpers: {
               uppercase: str => str.toUpperCase()
@@ -188,7 +188,7 @@ describe('koa-views', () => {
         })
       )
       .use(ctx => {
-        ctx.state = {title: 'my title', author: 'queckezz'}
+        ctx.state = { title: 'my title', author: 'queckezz' }
         return ctx.render('./fixtures/view-options.hbs')
       })
 
@@ -314,7 +314,7 @@ describe('koa-views', () => {
           options: {
             nunjucksEnv: env
           },
-          map: {html: 'nunjucks'}
+          map: { html: 'nunjucks' }
         })
       )
       .use(ctx => {
