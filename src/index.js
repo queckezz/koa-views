@@ -38,7 +38,7 @@ function viewsMiddleware(
         const state = Object.assign(locals, options, ctx.state || {})
         // deep copy partials
         state.partials = Object.assign(Object.create(null), options.partials || {})
-        debug('render `%s` with %s', paths.rel, JSON.stringify(state, bigIntReplacer()))
+        if (debug.enabled) debug('render `%s` with %s', paths.rel, JSON.stringify(state, bigIntReplacer()))
         ctx.type = 'text/html'
 
         if (isHtml(suffix) && !map) {
