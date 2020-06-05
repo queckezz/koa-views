@@ -31,7 +31,7 @@ function viewsMiddleware(
 ) {
   return function views(ctx, next) {
     function render(relPath, locals = {}) {
-      if (!ctx) ctx = this;
+      if (!ctx) ctx = this
 
       return getPaths(path, relPath, extension).then(paths => {
         const suffix = paths.ext
@@ -74,11 +74,11 @@ function viewsMiddleware(
     }
 
     // Use to extends app.context
-    if (!ctx) return render;
+    if (!ctx) return render
 
     if (ctx.render) return next()
 
-    ctx.response.render = ctx.render = render;
+    ctx.response.render = ctx.render = render
 
     return next()
   }
