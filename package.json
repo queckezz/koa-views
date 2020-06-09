@@ -1,6 +1,6 @@
 {
   "name": "koa-views",
-  "version": "6.2.3",
+  "version": "6.3.0",
   "description": "Template rendering middleware for koa",
   "main": "src/index.js",
   "scripts": {
