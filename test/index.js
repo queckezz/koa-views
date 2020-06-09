@@ -17,7 +17,7 @@ describe('koa-views', () => {
       .expect(404, done)
   })
 
-  it('have a render method2', done => {
+  it('have a render method by app.context', done => {
     const app = new Koa()
     const render = views()()
 
@@ -78,7 +78,7 @@ describe('koa-views', () => {
       .expect(200, done)
   })
 
-  it('autoRender is false2', done => {
+  it('autoRender is false by app.context', done => {
     const app = new Koa()
     const render = views(__dirname, { autoRender: false, extension: 'ejs' })()
 
@@ -385,7 +385,7 @@ describe('koa-views', () => {
       .expect(200, done)
   })
 
-  it('nunjucks with nunjucksEnv2', done => {
+  it('nunjucks with nunjucksEnv by app.context', done => {
     const nunjucks = require('nunjucks')
     const env = new nunjucks.Environment(
       new nunjucks.FileSystemLoader(path.join(__dirname, 'fixtures'))

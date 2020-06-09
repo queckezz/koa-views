@@ -27,12 +27,17 @@ npm install koa-views
 ```js
 var views = require('koa-views');
 
-// Must be used before any router is used
-app.use(views(__dirname + '/views', {
+const render = views(__dirname + '/views', {
   map: {
     html: 'underscore'
   }
-}));
+})
+
+// Must be used before any router is used
+app.use(render)
+// OR Expand by app.context
+// No order restrictions
+// app.context.render = render()
 
 app.use(async function (ctx) {
   ctx.state = {
@@ -76,7 +81,10 @@ app.use(render('home', { title : 'Home Page' }));
 * `opts.autoRender`: Whether to use `ctx.body` to receive the rendered template string. Defaults to `true`.
 
 ```js
-app.use(views(__dirname, { autoRender: false, extension: 'pug' }))
+const render = views(__dirname, { autoRender: false, extension: 'pug' });
+app.use(render)
+// OR
+// app.context.render = render()
 
 app.use(async function (ctx) {
   return await ctx.render('user.pug')
@@ -86,7 +94,10 @@ app.use(async function (ctx) {
 vs.
 
 ```js
-app.use(views(__dirname, { extension: 'pug' }))
+const render = views(__dirname, { extension: 'pug' })
+app.use(render)
+// OR
+// app.context.render = render()
 
 app.use(async function (ctx) {
   await ctx.render('user.pug')
@@ -105,7 +116,10 @@ app.use(async function (ctx) {
 vs.
 
 ```js
-app.use(views(__dirname, { extension: 'pug' }))
+const render = views(__dirname, { extension: 'pug' })
+app.use(render)
+// OR
+// app.context.render = render()
 
 app.use(async function (ctx) {
   await ctx.render('user')
@@ -116,8 +130,10 @@ app.use(async function (ctx) {
 
 In this example, each file ending with `.html` will get rendered using the `nunjucks` templating engine.
 ```js
-app.use(views(__dirname, { map: {html: 'nunjucks' }}))
-
+const render = views(__dirname, { map: {html: 'nunjucks' }})
+app.use(render)
+// OR
+// app.context.render = render()
 // render `user.html` with nunjucks
 app.use(async function (ctx) {
   await ctx.render('user.html')
@@ -130,7 +146,10 @@ If you’re not happy with consolidate or want more control over the engines, yo
 be an object that maps an extension to a function that receives a path and options and returns a promise. In this example templates with the `foo` extension will always return `bar`.
 
 ```js
-app.use(views(__dirname, { engineSource: {foo: () => Promise.resolve('bar')}}))
+const render = views(__dirname, { engineSource: {foo: () => Promise.resolve('bar')}})
+app.use(render)
+// OR
+// app.context.render = render()
 
 app.use(async function (ctx) {
   await ctx.render('index.foo')
