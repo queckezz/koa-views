@@ -17,6 +17,24 @@ describe('koa-views', () => {
       .expect(404, done)
   })
 
+  it('have a render method by app.context', done => {
+    const app = new Koa()
+    const render = views()()
+
+    app.context.render = render
+    app.response.render = render
+
+    app.use(ctx => {
+      should(ctx.render).be.ok()
+      should(ctx.render).be.a.Function()
+      should(ctx.response.render).be.equal(ctx.render)
+    })
+
+    request(app.listen())
+      .get('/')
+      .expect(404, done)
+  })
+
   it('default to html', done => {
     const app = new Koa().use(views(__dirname)).use(ctx => {
       return ctx.render('./fixtures/basic')
@@ -29,8 +47,45 @@ describe('koa-views', () => {
       .expect(200, done)
   })
 
+  it('default to html', done => {
+    const app = new Koa()
+    const render = views(__dirname)()
+
+    app.context.render = render
+    app.response.render = render
+
+    app.use(ctx => {
+      return ctx.render('./fixtures/basic')
+    })
+
+    request(app.listen())
+      .get('/')
+      .expect('Content-Type', /html/)
+      .expect(/basic:html/)
+      .expect(200, done)
+  })
+
   it('autoRender is false', done => {
     const app = new Koa().use(views(__dirname, { autoRender: false, extension: 'ejs' })).use(async (ctx) => {
+      const res = await ctx.render('./fixtures/basic')
+      ctx.body = res
+    })
+
+    request(app.listen())
+      .get('/')
+      .expect('Content-Type', /html/)
+      .expect(/basic:ejs/)
+      .expect(200, done)
+  })
+
+  it('autoRender is false by app.context', done => {
+    const app = new Koa()
+    const render = views(__dirname, { autoRender: false, extension: 'ejs' })()
+
+    app.context.render = render
+    app.response.render = render
+
+    app.use(async (ctx) => {
       const res = await ctx.render('./fixtures/basic')
       ctx.body = res
     })
@@ -322,6 +377,39 @@ describe('koa-views', () => {
           message: 'this is a long message'
         })
       })
+
+    request(app.listen())
+      .get('/')
+      .expect('Content-Type', /html/)
+      .expect(/this </)
+      .expect(200, done)
+  })
+
+  it('nunjucks with nunjucksEnv by app.context', done => {
+    const nunjucks = require('nunjucks')
+    const env = new nunjucks.Environment(
+      new nunjucks.FileSystemLoader(path.join(__dirname, 'fixtures'))
+    )
+    env.addFilter('shorten', (str, count) => {
+      return str.slice(0, count || 5)
+    })
+
+    const app = new Koa()
+    const render = views(path.join(__dirname, 'fixtures'), {
+      options: {
+        nunjucksEnv: env
+      },
+      map: { html: 'nunjucks' }
+    })()
+
+    app.context.render = render
+    app.response.render = render
+
+    app.use(ctx => {
+      return ctx.render('nunjucks-filter', {
+        message: 'this is a long message'
+      })
+    })
 
     request(app.listen())
       .get('/')

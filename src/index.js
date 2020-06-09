@@ -30,9 +30,9 @@ function viewsMiddleware(
   { autoRender = true, engineSource = consolidate, extension = 'html', options = {}, map } = {}
 ) {
   return function views(ctx, next) {
-    if (ctx.render) return next()
+    function render(relPath, locals = {}) {
+      if (!ctx) ctx = this
 
-    ctx.response.render = ctx.render = function(relPath, locals = {}) {
       return getPaths(path, relPath, extension).then(paths => {
         const suffix = paths.ext
         const state = Object.assign(locals, options, ctx.state || {})
@@ -72,6 +72,13 @@ function viewsMiddleware(
         }
       })
     }
+
+    // Use to extends app.context
+    if (!ctx) return render
+
+    if (ctx.render) return next()
+
+    ctx.response.render = ctx.render = render
 
     return next()
   }
