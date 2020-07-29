@@ -49,7 +49,9 @@ type viewsOptions = {
  * @param opts (optional)
  */
 declare function views(root: string, opts?: viewsOptions): Function
-declare namespace views { }
+declare namespace views {
+    const viewsOptions: viewsOptions;
+}
 
 export = views
 
