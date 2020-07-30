@@ -40,7 +40,7 @@ type viewsOptions = {
     /*
     * These options will get passed to the view engine. This is the time to add partials and helpers etc.
     */
-   options?: any,
+    options?: any,
 }
 
 /**
