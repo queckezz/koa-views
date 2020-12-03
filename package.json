@@ -3,6 +3,7 @@
   "version": "6.3.1",
   "description": "Template rendering middleware for koa",
   "main": "src/index.js",
+  "types": "index.d.ts",
   "scripts": {
     "lint": "eslint .",
     "xyz": "xyz",
