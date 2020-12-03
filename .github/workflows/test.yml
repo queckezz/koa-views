@@ -3,16 +3,14 @@
 
 name: koa-views
 
-on:
-  release:
-    types: [created]
+on: [push]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [ '10', '12', '14' ]
+        node: ['10', '12', '14']
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
