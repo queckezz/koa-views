@@ -40,7 +40,7 @@ function viewsMiddleware(
 
       return getPaths(path, relPath, extension).then(paths => {
         const suffix = paths.ext
-        const state = Object.assign(locals, options, ctx.state || {})
+        const state = Object.assign({}, options, ctx.state || {}, locals)
         // deep copy partials
         state.partials = Object.assign(Object.create(null), options.partials || {})
         if (debug.enabled) debug('render `%s` with %s', paths.rel, JSON.stringify(state, bigIntReplacer()))
