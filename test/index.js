@@ -417,4 +417,15 @@ describe('koa-views', () => {
       .expect(/this </)
       .expect(200, done)
   })
+
+  // #142
+  it('rendering outside root should be forbidden', done => {
+    const app = new Koa().use(views(__dirname)).use(ctx => {
+      return ctx.render('../test-outside/fixtures/basic.ejs')
+    })
+
+    request(app.listen())
+      .get('/')
+      .expect(403, done)
+  })
 })

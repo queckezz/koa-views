@@ -1,11 +1,11 @@
 'use strict'
 
-const { resolve } = require('path')
 const debug = require('debug')('koa-views')
 const consolidate = require('consolidate')
 const send = require('koa-send')
 const getPaths = require('get-paths')
 const pretty = require('pretty')
+const resolve = require('resolve-path')
 
 module.exports = viewsMiddleware
 

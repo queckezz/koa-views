@@ -16,7 +16,8 @@
     "get-paths": "0.0.7",
     "koa-send": "^5.0.0",
     "mz": "^2.4.0",
-    "pretty": "^2.0.0"
+    "pretty": "^2.0.0",
+    "resolve-path": "^1.4.0"
   },
   "devDependencies": {
     "ejs": "^2.4.1",
