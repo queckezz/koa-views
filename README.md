@@ -1,6 +1,6 @@
 # koa-views
 
-![koa-views](https://github.com/queckezz/koa-views/workflows/koa-views/badge.svg)
+![koa-views](https://img.shields.io/github/workflow/status/queckezz/koa-views/koa-views?logo=github&style=flat-square)
 [![NPM version][npm-image]][npm-url]
 [![NPM downloads][npm-downloads-image]][npm-url]
 [![Dependency Status][david-image]][david-url]
