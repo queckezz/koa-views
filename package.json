@@ -11,6 +11,7 @@
   },
   "precommit": "lint, test",
   "dependencies": {
+    "@types/koa": "^2.13.1",
     "consolidate": "^0.16.0",
     "debug": "^4.1.0",
     "get-paths": "0.0.7",

@@ -19,7 +19,7 @@
     });
 
  =============================================== */
-
+import { Middleware } from 'koa'
 type viewsOptions = {
     /*
     * Whether to use ctx.body to receive the rendered template string. Defaults to true.
@@ -48,7 +48,7 @@ type viewsOptions = {
  * @param root Where your views are located. Must be an absolute path. All rendered views are relative to this path
  * @param opts (optional)
  */
-declare function views(root: string, opts?: viewsOptions): Function
+declare function views(root: string, opts?: viewsOptions): Middleware
 declare namespace views {
     const viewsOptions: viewsOptions;
 }
