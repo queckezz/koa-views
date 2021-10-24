@@ -11,7 +11,6 @@
   },
   "precommit": "lint, test",
   "dependencies": {
-    "@types/koa": "^2.13.1",
     "consolidate": "^0.16.0",
     "debug": "^4.1.0",
     "get-paths": "0.0.7",
@@ -40,6 +39,14 @@
     "tape": "^4.4.0",
     "underscore": "^1.8.3",
     "xyz": "^2.1.0"
+  },
+  "peerDependencies": {
+    "@types/koa": "^2.13.1"
+  },
+  "peerDependenciesMeta": {
+    "@types/koa": {
+      "optional": true
+    }
   },
   "repository": {
     "type": "git",
