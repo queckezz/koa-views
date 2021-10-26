@@ -56,7 +56,7 @@ declare namespace views {
 export = views
 
 declare module 'koa' {
-    interface Context {
+    interface ExtendableContext {
         render(viewPath: string, locals?: any): Promise<void>
     }
 }
