@@ -70,9 +70,10 @@ function viewsMiddleware(
 
             if (autoRender) {
               ctx.body = html
-            } else {
-              return Promise.resolve(html)
+              return html
             }
+
+            return Promise.resolve(html)
           })
         }
       })
