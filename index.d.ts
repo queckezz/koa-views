@@ -43,12 +43,14 @@ type viewsOptions = {
     options?: any,
 }
 
+type Renderer = (viewPath: string, locals?: any) => Promise<string>
+
 /**
  * return Function or Koa.middleware
  * @param root Where your views are located. Must be an absolute path. All rendered views are relative to this path
  * @param opts (optional)
  */
-declare function views(root: string, opts?: viewsOptions): Middleware
+declare function views(root: string, opts?: viewsOptions): Middleware & (() => Renderer)
 declare namespace views {
     const viewsOptions: viewsOptions;
 }
@@ -57,6 +59,6 @@ export = views
 
 declare module 'koa' {
     interface ExtendableContext {
-        render(viewPath: string, locals?: any): Promise<void>
+        render: Renderer
     }
 }
