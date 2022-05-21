@@ -61,6 +61,13 @@ function viewsMiddleware(
 
         let html = await render(resolve(path, paths.rel), state)
 
+        // support layout template files
+        if (state.layout) {
+          const layoutPaths = await getPaths(path, state.layout, extension)
+          state.body = html
+          html = await render(resolve(path, layoutPaths.rel), state)
+        }
+
         // since pug has deprecated `pretty` option
         // we'll use the `pretty` package in the meanwhile
         if (locals.pretty) {
